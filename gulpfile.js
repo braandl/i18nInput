@@ -9,7 +9,6 @@ var gulp = require('gulp'),
     buffer     = require('vinyl-buffer'),
     source     = require('vinyl-source-stream'),
     rename = require('gulp-rename'),
-    runSequence = require('run-sequence'),
     n_fs = require('fs'),
     n_browserify = require('browserify'),
     n_babelify = require('babelify'),
@@ -59,17 +58,16 @@ gulp.task('mergejs', function () {
         .pipe(gulp.dest(config.js.outputDir))
 });
 
-gulp.task('release', function (callback) {
-    runSequence('mergejs', callback);
+gulp.task('release', ['mergejs'], function () {
+    console.log('done');
 });
 
-gulp.task('js-only', function (callback) {
-    runSequence('mergejs-fast', callback);
+gulp.task('js-only', ['mergejs-fast'], function () {
+    console.log('done');
 });
 
-gulp.task('fast', function (callback) {
+gulp.task('fast', ['mergejs-fast'], function () {
     gulp.watch(['js/*.js'], ['js-only']);
-    runSequence(['mergejs-fast'], callback);
 });
 
 gulp.task('default', ['fast'], function () {
