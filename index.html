@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multilingual Input Field Demo</title>
+    <link rel="stylesheet" type="text/css" href="dist/style.css" />
+    <link rel="stylesheet" type="text/css" href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div style="margin:15px; text-decoration: underline;"><h1>i18nInputViewDemo</h1></div>
+    <div placeholder="['Deutsch', 'Österreichisch', 'English-GB', 'English-US', 'NL', 'IT', 'ES']" class="demo" input-class="form-control" expander-class="roundcorners" id="my_id1" width="350" languages="['de_DE','de_AT','en_GB','en_US','nl_NL','it_IT','es_ES']" ></div>
+
+    <div style="border: 1px solid #ccc; padding-top: 20px; padding-bottom: 20px; margin: 45px 15px 15px 15px; width: 350px;">
+        <form method="POST" action="demo.html">
+            <div style="margin-left: 16px; margin-top: -10px" id="my_id2" width="250" submitOnMissing="false" languages="['de_DE','de_AT','en_GB']"></div>
+            <input style="margin-left: 16px; margin-top:40px;" type="submit" name="submit" value="Absenden"/>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://tether.io/dist/js/tether.js"></script>
+    <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script src="dist/i18nInput.js"></script>
+    <script>
+        $(document).ready(function () {
+            i18nInputView("my_id1");
+            i18nInputView("my_id2");
+            $("#my_id2").registerFormIncompleteHandler(function() {
+                alert('Please fill in all languages!');
+            });
+        });
+    </script>
+</body>
+</html>
