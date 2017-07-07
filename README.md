@@ -108,6 +108,9 @@ The create the control, using the global i18n function on the ID of the div.
  $('#my_i18n').registerFormIncompleteHandler(function() { /*...*/ });
  <- Boolean; 
  
+ // Enabling / Disabling the input field.
+ $('#my_i18n > input').prop('disabled', true);
+ 
  // Instead of using jQuery selector, plain JavaScript is okay as well:
  document.getElementById('my_id1').i18n();
 ```
