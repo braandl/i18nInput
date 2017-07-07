@@ -18,7 +18,7 @@ i18nInputView is dependent on the following JavaScript libraries:
 
 ## Demo
 
-See demo under https://braandl.github.io/i18nInputView/
+See demo under https://braandl.github.io/i18nInput
 
 ## Usage
 
