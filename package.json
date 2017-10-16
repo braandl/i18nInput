@@ -1,14 +1,14 @@
 {
   "name": "i18ninput",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Stephan Brandt <stephan.brandt@contagt.com>",
-  "homepage": "https://braandl.github.io/i18nInputView/",
+  "homepage": "https://braandl.github.io/i18nInput/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/braandl/i18nInputView.git"
+    "url": "https://github.com/braandl/i18nInput/"
   },
   "bugs": {
-    "url": "https://github.com/braandl/i18nInputView/issues"
+    "url": "https://github.com/braandl/i18nInput/issues"
   },
   "keywords": [
     "i18n",

@@ -1,4 +1,4 @@
-# i18nInputView
+# i18nInput
 
 [![Build Status](https://travis-ci.org/braandl/i18nInput.svg?branch=master)](https://travis-ci.org/braandl/i18nInput)
 
