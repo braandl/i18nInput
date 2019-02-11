@@ -26,8 +26,9 @@ class FlagsTool extends InitMember {
         super();
         this.container = el;
         this.main = loader;
-        let string = String(el.attr('languages').replace(/'/g, "\""));
-        let lng = $.parseJSON(string);
+        //let string = String(el.attr('languages').replace(/'/g, "\""));
+        //let lng = $.parseJSON(string);
+        let lng = loader.langKeys;
 
         for (let i = 0; i < lng.length; i++) {
             let currentLng = loader.codeTranslator.translateIsoToShort(lng[i]);
@@ -92,11 +93,10 @@ class FlagsTool extends InitMember {
             this.container.append("<div class='default-picker'></div>");
         }
         this.flagger = $(this.container.children()[this.container.children().length - 1]);
-        this.flagger.css({"left" : this.main.inputTool.input.outerWidth() - 24, 'margin-top': - (this.main.inputTool.input.outerHeight() + 24) / 2});
+        //this.flagger.css({"left" : this.main.inputTool.input.outerWidth() - 24, 'margin-top': - (this.main.inputTool.input.outerHeight() + 24) / 2});
         this.flagger.html('<span title="Language: '+ this.main.codeTranslator.translateShortToIso(this.languages[0]) +'" class="flag-icon flag-icon-'+ this.languages[0] +'"></span>');
         this.loadFlags();
         const self = this;
-
 
         this.flagger.hover(function(){
             if (self.languages.length === 1) return;
@@ -168,7 +168,7 @@ class FlagsTool extends InitMember {
         }
         this.flaggerChooser = $(this.container.children()[this.container.children().length - 1]);
         this.flaggerChooser.css({"position" : "absolute","margin-top": "-2px", "display": "none", "padding": "2px", "background-color" : "#FFFFFF",
-            width: this.main.inputTool.input.outerWidth(),
+            width: "100%",
             "border" : "1px solid "+ this.main.inputTool.input.css('border-color'), "z-index": 2});
         let itemsPerRow = Math.floor((this.flaggerChooser.innerWidth() - this.flaggerChooser.css("padding") * 2) / (this.flagger.outerWidth() + 2));
         for (let i = 0; i < this.languages.length; i++) {

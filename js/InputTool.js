@@ -58,17 +58,27 @@ class InputTool extends InitMember {
         }
 
         this.input = $(el.children()[el.children().length - 1]);
+
         this.main = loader;
         this.input.css({"width" : el.attr('width') < 35 ? 35 : el.attr('width'), "height" : el.attr('height') < 12 ? 12 : el.attr('height')});
-        el.css({"width" : this.input.outerWidth(), "padding-bottom" : "2px", "padding-top" : "2px"});
+        el.css({"width" : this.input.outerWidth() < 35 ? 'auto' : this.input.outerWidth(), "padding-bottom" : "2px", "padding-top" : "2px", "position": "relative"});
         this.addElementMethods();
         this.initKeyLogging();
+        this.initInputChange();
     }
 
 
     initKeyLogging() {
         const self = this;
         this.input.keyup(function () {
+            let currentLanguage = self.main.flagsTool.languages[self.main.flagsTool.currentFlag];
+            self.inputvalues[currentLanguage] = $(this).val();
+        });
+    }
+
+    initInputChange() {
+        const self = this;
+        this.input.change(function() {
             let currentLanguage = self.main.flagsTool.languages[self.main.flagsTool.currentFlag];
             self.inputvalues[currentLanguage] = $(this).val();
         });
@@ -113,7 +123,18 @@ class InputTool extends InitMember {
             return self.main.codeTranslator.translateIsoArrayToShort(missing);
         };
 
+        const setValueAuto = function (value) {
+          if(typeof value === 'object'){
+            Object.keys(value).forEach(function(key) {
+              setValue(key, value[key]);
+            });
+          }else {
+            self.input.val(value);
+          }
+        }
+
         const setValue = function(lng, value) {
+            console.log(lng, value);
             if (lng instanceof Array) {
                 if (value instanceof  Array) {
                     if (lng.length !== value.length) {
@@ -159,6 +180,7 @@ class InputTool extends InitMember {
         this.container[0].complete = completed;
         this.container[0].missing = missingi18n;
         this.container[0].setValue = setValue;
+        this.container[0].setValueAuto = setValueAuto;
         this.container[0].allLocales = availablei18n;
         this.container[0].registerFormIncompleteHandler = registerFormIncompleteHandler;
 
@@ -175,8 +197,23 @@ class InputTool extends InitMember {
         };
 
         this.container.init.prototype.setValue = function (lng, value) {
-            return document.getElementById($(this).attr("id").replace('#', '')).setValue(lng, value);
+          return document.getElementById($(this).attr("id").replace('#', '')).setValue(lng, value);
         };
+
+        this.container.init.prototype.setValueAuto = function (value) {
+          console.log($(this));
+          return document.getElementById($(this).attr("id").replace('#', '')).setValueAuto(value);
+        };
+
+        /*this.container.init.prototype.val = function (value) {
+          if(value && $(this).attr("id")){
+            if(typeof value === 'object'){
+              return document.getElementById($(this).attr("id").replace('#', '')).setValueWithObject(value);
+            }else {
+              return document.getElementById($(this).attr("id").replace('#', '')).setValue(value);
+            }
+          }
+        };*/
 
         this.container.init.prototype.allLocales = function () {
             return document.getElementById($(this).attr("id").replace('#', '')).allLocales();

@@ -17,12 +17,13 @@ class MainController extends InitMember {
         this.failHandler = null;
     }
 
-    constructor(container) {
+    constructor(container, langKeys) {
         super();
+        this.langKeys = langKeys;
         this.container = $("#" + container);
         this.initCodeTranslator();
         this.initInputTool();
-        this.initFlagsTool();
+        this.initFlagsTool(langKeys);
         this.registerSubmitHandler();
         this.inputTool.changedInputView();
     }
@@ -31,8 +32,8 @@ class MainController extends InitMember {
         this.inputTool = new InputTool(this.container, this);
     }
 
-    initFlagsTool() {
-        this.flagsTool = new FlagsTool(this.container, this);
+    initFlagsTool(langKeys) {
+        this.flagsTool = new FlagsTool(this.container, this, langKeys);
     }
 
     initCodeTranslator() {
