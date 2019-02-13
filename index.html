@@ -24,8 +24,11 @@
     <script src="dist/i18nInput.js"></script>
     <script>
         $(document).ready(function () {
-            i18nInputView("my_id1");
-            i18nInputView("my_id2");
+            import i18nInputView from 'dist/i18nInput';
+            i18nInput = new i18nInputView(['de_DE, en_GB, fr_FR']);
+
+            i18nInput.i18nInputView("my_id1");
+            i18nInput.i18nInputView("my_id2");
             $("#my_id2").registerFormIncompleteHandler(function() {
                 alert('Please fill in all languages!');
             });
