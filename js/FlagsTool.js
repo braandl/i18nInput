@@ -26,9 +26,13 @@ class FlagsTool extends InitMember {
         super();
         this.container = el;
         this.main = loader;
-        //let string = String(el.attr('languages').replace(/'/g, "\""));
-        //let lng = $.parseJSON(string);
-        let lng = loader.langKeys;
+        let lng = null;
+        if (el.attr('languages') !== undefined && loader.langKeys === undefined) {
+            let string = String(el.attr('languages').replace(/'/g, "\""));
+            lng = $.parseJSON(string);
+        } else {
+            lng = loader.langKeys;
+        }
 
         for (let i = 0; i < lng.length; i++) {
             let currentLng = loader.codeTranslator.translateIsoToShort(lng[i]);

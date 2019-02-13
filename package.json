@@ -44,6 +44,7 @@
     "webpack-stream": "^2.1.1"
   },
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "npm": "^6.7.0"
   }
 }

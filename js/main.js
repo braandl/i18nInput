@@ -13,4 +13,11 @@ class i18nInputView {
     return new MainController(container, this.langKeys);
   }
 }
+
+function i18n(container) {
+  return new MainController(container);
+}
+
+window.i18n = i18n;
+
 export default i18nInputView;

@@ -19,16 +19,16 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
-    <script src="https://tether.io/dist/js/tether.js"></script>
-    <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.4/js/tether.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <script src="dist/i18nInput.js"></script>
     <script>
         $(document).ready(function () {
-            import i18nInputView from 'dist/i18nInput';
-            i18nInput = new i18nInputView(['de_DE, en_GB, fr_FR']);
+            //import i18nInputView from 'dist/i18nInput';
+            //var i18nInput = new i18nInputView(['de_DE, en_GB, fr_FR']);
 
-            i18nInput.i18nInputView("my_id1");
-            i18nInput.i18nInputView("my_id2");
+            i18n("my_id1");
+            i18n("my_id2");
             $("#my_id2").registerFormIncompleteHandler(function() {
                 alert('Please fill in all languages!');
             });
