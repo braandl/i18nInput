@@ -24,18 +24,24 @@ See demo under https://braandl.github.io/i18nInput
 
 ## Usage
 
-Use a div element to define as the container of the input field.
-The first entry will be the default language and selected on start.
+setup i18nInputView and define languages
 
-```html
- <div id="my_i18n" languages="['de_DE','de_AT','en_GB', 'en_US','nl_NL']"></div>
+```javascript
+    import i18nInputView from 'i18nInput';
+    i18nInput = new i18nInputView(['de_DE, en_GB, fr_FR']);
 ```
 
-The create the control, using the global i18n function on the ID of the div.
+Use a div element to define as the container of the input field.
+
+```html
+ <div id="my_i18n"></div>
+```
+
+The create the control, use the i18nInputView function on the ID of the div.
 
 ```javascript
  $(document).ready(function () {
-    i18nInputView("my_i18n");
+    i18nInput.i18nInputView("my_i18n");
  });
 ```
 
