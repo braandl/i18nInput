@@ -238,7 +238,7 @@ class CodeTranslator extends InitMember {
             "tv":"tv_TV",
             "um":"en_UM",
             "vi":"en_VI",
-            "gb":"en_GB",
+            "gb":"en_EN",
             "us":"en_US",
             "ug":"en_UG",
             "ua":"ru_UA",
