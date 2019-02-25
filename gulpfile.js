@@ -2,75 +2,65 @@
  * Created by sbrandt on 05.07.17.
  */
 ////////////////////////
-
-var gulp = require('gulp'),
+const gulp = require('gulp'),
+    babel = require('gulp-babel'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps'),
     buffer     = require('vinyl-buffer'),
     source     = require('vinyl-source-stream'),
     rename = require('gulp-rename'),
-    n_fs = require('fs'),
-    n_browserify = require('browserify'),
-    n_babelify = require('babelify'),
+    fs = require('fs'),
+    browserify = require('browserify'),
+    babelify = require('babelify'),
     path = require('path'),
+    concat = require('gulp-concat'),
+    concatCss = require('gulp-concat-css'),
+    clean = require('gulp-clean'),
     sourceMaps = require('gulp-sourcemaps');
-
 
 var config = {
     js: {
-        src: './main.js',       // Entry point
+        src: './js/**/*.js',       // Entry point
         outputDir: './dist/',  // Directory to save bundle to
         mapDir: './srcmaps/',      // Subdirectory to save maps to
         outputFile: 'i18nInput.js' // Name to use for bundle
     },
+    flags : {
+        src:  ['flags/**/*.svg'],
+        dst: './dist/flags/'
+    },
+    css : {
+        outputDir: './dist/',  // Directory to save bundle to
+    }
 };
 
-gulp.task('mergejs-fast', function () {
-    n_browserify({
-        debug: true,
-        entries: ['./js/main.js']
-    }).transform(n_babelify.configure({
-        presets: ['es2015'],
-        sourceMapRelative: path.resolve(__dirname, 'js')
-    }))
-        .on('error', swallowError)
-        .bundle()
-        .on('error', swallowError)
-        .pipe(n_fs.createWriteStream('dist/i18nInput.js'));
+gulp.task('css', function () {
+    return gulp.src('css/**/*.css')
+        .pipe(concatCss("style.css"))
+        .pipe(gulp.dest(config.css.outputDir));
+});
+
+
+gulp.task('copy', function () {
+    return gulp.src(config.flags.src)
+        .pipe(gulp.dest(config.flags.dst));
 });
 
 gulp.task('mergejs', function () {
-    n_browserify({
-        debug: true,
-        entries: ['./js/main.js']
-    }).transform(n_babelify.configure({
-        presets: ['es2015'],
-        sourceMapRelative: path.resolve(__dirname, 'js')
-    }))
-        .bundle()
-        .pipe(source(config.js.src))
-        .pipe(buffer())
-        .pipe(rename(config.js.outputFile))
-        .pipe(uglify({mangle: true}))
-        .on('error', swallowError)
-        .pipe(sourceMaps.init({ loadMaps : true }))
-        .pipe(sourceMaps.write(config.js.mapDir))
-        .pipe(gulp.dest(config.js.outputDir))
+        gulp.src(config.js.src)
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(gulp.dest('dist'))
 });
 
-gulp.task('release', ['mergejs'], function () {
-    console.log('done');
+gulp.task('clean', function() {
+    return gulp.src('dist/', {read: false})
+        .pipe(clean());
 });
 
-gulp.task('js-only', ['mergejs-fast'], function () {
-    console.log('done');
-});
-
-gulp.task('fast', ['mergejs-fast'], function () {
-    gulp.watch(['js/*.js'], ['js-only']);
-});
-
-gulp.task('default', ['fast'], function () {
+gulp.task('default', ['clean', 'mergejs', 'css', 'copy'], function () {
     console.log('done');
 }).on('error', swallowError);
 

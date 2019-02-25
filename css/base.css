@@ -1,0 +1,23 @@
+.demo {
+    margin: 15px;
+}
+.default-picker {
+    right: 7px;
+    cursor: pointer;
+    top: calc(50% - 11px);
+    position: absolute;
+    border-left : 1px solid rgba(50, 50, 50, 0.2);
+    padding-left: 5px;
+    margin-left: -10px;
+    float :left;
+}
+
+.i18n-view-incomplete {
+    border: 3px solid #ff6600 !important;
+    content : 'Missing Values';
+}
+
+.roundcorners {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
