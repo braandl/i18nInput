@@ -2,7 +2,7 @@
  * Created by sbrandt on 05.07.17.
  */
 ////////////////////////
-const gulp = require('gulp'),
+var gulp = require('gulp'),
     babel = require('gulp-babel'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
