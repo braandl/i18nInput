@@ -1,6 +1,7 @@
 language: node_js
+cache: npm
 node_js:
-  - 0.10
+  - 8.11.4
 before_install:
   - npm install
 script: gulp

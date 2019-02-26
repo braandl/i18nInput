@@ -22,45 +22,94 @@ var gulp = require('gulp'),
 var config = {
     js: {
         src: './js/**/*.js',       // Entry point
+        srcPkg: './js/main.js',       // Entry point
         outputDir: './dist/',  // Directory to save bundle to
-        mapDir: './srcmaps/',      // Subdirectory to save maps to
+        outputDirPkg: './pkg',
         outputFile: 'i18nInput.js' // Name to use for bundle
     },
     flags : {
         src:  ['flags/**/*.svg'],
-        dst: './dist/flags/'
+        dst: './dist/flags/',
+        dstPkg: './pkg/flags/'
     },
     css : {
         outputDir: './dist/',  // Directory to save bundle to
+        outputDirPkg: './pkg/',  // Directory to save bundle to
     }
 };
 
-gulp.task('css', function () {
-    return gulp.src('css/**/*.css')
+gulp.task('css', function (done) {
+    gulp.src('css/**/*.css')
         .pipe(concatCss("style.css"))
         .pipe(gulp.dest(config.css.outputDir));
 });
 
-
-gulp.task('copy', function () {
-    return gulp.src(config.flags.src)
-        .pipe(gulp.dest(config.flags.dst));
+gulp.task('cssPkg', function (done) {
+    gulp.src('css/**/*.css')
+        .pipe(concatCss("style.css"))
+        .pipe(gulp.dest(config.css.outputDirPkg));
 });
 
-gulp.task('mergejs', function () {
-        gulp.src(config.js.src)
+
+gulp.task('copy', function (done) {
+    gulp.src(config.flags.src)
+        .pipe(gulp.dest(config.flags.dst));
+    done();
+});
+
+gulp.task('copyPkg', function (done) {
+    gulp.src(config.flags.src)
+        .pipe(gulp.dest(config.flags.dstPkg));
+    done();
+});
+
+gulp.task('mergejs', function (done) {
+    gulp.src(config.js.src)
         .pipe(babel({
             presets: ['@babel/env']
         }))
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest(config.js.outputDir))
+    done();
 });
 
-gulp.task('clean', function() {
-    return gulp.src('dist/', {read: false})
+
+gulp.task('packjs', function (done) {
+    browserify({
+            entries: [config.js.srcPkg],
+            debug: true
+        })
+        .transform(babelify.configure({
+            presets: ["es2015"]
+        }))
+        .bundle()
+        .pipe(source(config.js.outputFile))
+        .pipe(buffer())
+        .pipe(rename(config.js.outputFile))
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(uglify({mangle: true}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.js.outputDirPkg))
+    done();
+});
+
+gulp.task('clean', function(done) {
+    gulp.src('dist/', {read: false})
         .pipe(clean());
+    done();
+});
+
+gulp.task('cleanPkg', function(done) {
+    gulp.src('pkg/', {read: false})
+        .pipe(clean());
+    done();
 });
 
 gulp.task('default', ['clean', 'mergejs', 'css', 'copy'], function () {
+    console.log('done');
+}).on('error', swallowError);
+
+
+gulp.task('demo', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg'], function () {
     console.log('done');
 }).on('error', swallowError);
 

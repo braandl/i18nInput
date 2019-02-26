@@ -28,7 +28,7 @@ setup i18nInputView and define languages
 
 ```javascript
     import i18nInputView from 'i18nInput';
-    i18nInput = new i18nInputView(['de_DE, en_GB, fr_FR']);
+    i18nInput = new i18nInputView(['de_DE, en_EN, fr_FR']);
 ```
 
 Use a div element to define as the container of the input field.
@@ -60,7 +60,7 @@ The create the control, use the i18nInputView function on the ID of the div.
  placeholder="['Mein Platzhalter', 'My Placeholder']"
  
 <!-- Array of languages that are offered, the first one will be selected on start -->
- languages="['de_DE', 'en_GB']"
+ languages="['de_DE', 'en_EN']"
  
 <!-- Classname or classnames of the expander area underneath the input field --> 
  expander-class="classname"
@@ -85,13 +85,13 @@ The create the control, use the i18nInputView function on the ID of the div.
  $('#my_i18n').i18n();
  <- Array
     /*[de_DE: "Deutsch", nl_NL: "Nederlands", 
-    en_GB: "English", en_US: "Different English", 
+    en_EN: "English", en_US: "Different English", 
     de_AT: "Anderes Deutsch"]*/
 
  // Prints all languages that were not filled in.
  $('#my_i18n').missing();
  <- Array
-    /* ["de_DE", "de_AT", "en_GB", "en_US", "nl_NL"]; */
+    /* ["de_DE", "de_AT", "en_EN", "en_US", "nl_NL"]; */
 
  // Prints wheather all Fields were filled or not.
  $('#my_i18n').complete();
@@ -125,14 +125,14 @@ The create the control, use the i18nInputView function on the ID of the div.
 As shown in the example below, a i18nInputView can be wrapped in a 
 ```html
 <form METHOD="post">
-    <div id="my_i18n" languages="['de_DE','de_AT','en_GB']"></div>
+    <div id="my_i18n" languages="['de_DE','de_AT','en_EN']"></div>
 </form>
 ```
 form element.<br>
 When the form is submitted, the values of the i18nInputView will be appended to the form data as an Array:
 ```
     my_i18n[de_DE]:Hallo
-    my_i18n[en_GB]:Hello
+    my_i18n[en_EN]:Hello
     my_i18n[de_AT]:Grüezi
 ```
 an will be transferred to the target as such.<br>

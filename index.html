@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Multilingual Input Field Demo</title>
-    <link rel="stylesheet" type="text/css" href="dist/style.css" />
+    <link rel="stylesheet" type="text/css" href="pkg/style.css" />
     <link rel="stylesheet" type="text/css" href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" />
 </head>
 <body>
     <div style="margin:15px; text-decoration: underline;"><h1>i18nInputViewDemo</h1></div>
-    <div placeholder="['Deutsch', 'Österreichisch', 'English-GB', 'English-US', 'NL', 'IT', 'ES']" class="demo" input-class="form-control" expander-class="roundcorners" id="my_id1" width="350" languages="['de_DE','de_AT','en_GB','en_US','nl_NL','it_IT','es_ES']" ></div>
+    <div placeholder="['Deutsch', 'Österreichisch', 'English-GB', 'English-US', 'NL', 'IT', 'ES']" class="demo" input-class="form-control" expander-class="roundcorners" id="my_id1" width="350" languages="['de_DE','de_AT','en_EN','en_US','nl_NL','it_IT','es_ES']" ></div>
 
     <div style="border: 1px solid #ccc; padding-top: 20px; padding-bottom: 20px; margin: 45px 15px 15px 15px; width: 350px;">
         <form method="POST" action="demo.html">
-            <div style="margin-left: 16px; margin-top: -10px" id="my_id2" width="250" submitOnMissing="false" languages="['de_DE','de_AT','en_GB']"></div>
+            <div style="margin-left: 16px; margin-top: -10px" id="my_id2" width="250" submitOnMissing="false" languages="['de_DE','de_AT','en_EN']"></div>
             <input style="margin-left: 16px; margin-top:40px;" type="submit" name="submit" value="Absenden"/>
         </form>
     </div>
@@ -21,11 +21,11 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.4/js/tether.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script src="dist/i18nInput.js"></script>
+    <script src="pkg/i18nInput.js"></script>
     <script>
         $(document).ready(function () {
             //import i18nInputView from 'dist/i18nInput';
-            //var i18nInput = new i18nInputView(['de_DE, en_GB, fr_FR']);
+            //var i18nInput = new i18nInputView(['de_DE, en_EN, fr_FR']);
 
             i18n("my_id1");
             i18n("my_id2");
