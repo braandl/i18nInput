@@ -109,7 +109,7 @@ gulp.task('default', ['clean', 'mergejs', 'css', 'copy'], function () {
 }).on('error', swallowError);
 
 
-gulp.task('demo', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg'], function () {
+gulp.task('pkg', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg'], function () {
     console.log('done');
 }).on('error', swallowError);
 

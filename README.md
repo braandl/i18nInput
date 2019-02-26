@@ -9,7 +9,7 @@ or download the entire project and sample files.
 
 ```bash
  $ npm install
- $ gulp [release]
+ $ gulp [pkg]
 ```
 
 ## Requirements
