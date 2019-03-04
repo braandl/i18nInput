@@ -53,13 +53,13 @@ gulp.task('cssPkg', function (done) {
 
 gulp.task('copy', function (done) {
     gulp.src(config.flags.src)
-        .pipe(gulp.dest(config.flags.dst));
+        .pipe(gulp.dest(config.flags.dst)).on('error', swallowError);
     done();
 });
 
 gulp.task('copyPkg', function (done) {
     gulp.src(config.flags.src)
-        .pipe(gulp.dest(config.flags.dstPkg));
+    .pipe(gulp.dest(config.flags.dstPkg)).on('error', swallowError);
     done();
 });
 
@@ -93,9 +93,8 @@ gulp.task('packjs', function (done) {
 });
 
 gulp.task('clean', function(done) {
-    gulp.src('dist/', {read: false})
+    return gulp.src('dist/', {read: false})
         .pipe(clean());
-    done();
 });
 
 gulp.task('cleanPkg', function(done) {
@@ -104,7 +103,7 @@ gulp.task('cleanPkg', function(done) {
     done();
 });
 
-gulp.task('default', ['clean', 'mergejs', 'css', 'copy'], function () {
+gulp.task('default', ['mergejs', 'css', 'copy'], function () {
     console.log('done');
 }).on('error', swallowError);
 
