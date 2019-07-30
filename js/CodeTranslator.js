@@ -305,6 +305,18 @@ class CodeTranslator extends InitMember {
         return resultArray;
     }
 
+    translateIsoAssocArrayToShortObject(i18nArray) {
+        if (!Array.isArray(i18nArray)) {
+            throw ("Input Parameter must be of Type Array");
+        }
+
+        let resultArray ={};
+        i18nArray.each(this, function (key, value) {
+            resultArray[this.translateShortToIso(key)] = value;
+        });
+
+        return resultArray;
+    }
 
     translateIsoArrayToShort(i18nArray) {
         if (!Array.isArray(i18nArray)) {

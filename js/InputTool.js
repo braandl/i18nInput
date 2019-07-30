@@ -107,6 +107,16 @@ class InputTool extends InitMember {
             }
         };
 
+        const printResultsObject = function (lang) {
+            if (self.inputvalues !== undefined && self.inputvalues[lang] !== undefined) {
+                return self.inputvalues[lang];
+            } else if (self.inputvalues !== undefined) {
+                return self.main.codeTranslator.translateIsoAssocArrayToShortObject(self.inputvalues);//;self.main.codeTranslator.translateShortToIso(lang);
+            } else {
+                return "";
+            }
+        };
+
         const completed = function() {
             return missingi18n().length === 0;
         };
@@ -177,6 +187,7 @@ class InputTool extends InitMember {
         };
 
         this.container[0].i18n = printResults;
+        this.container[0].i18nObject = printResultsObject;
         this.container[0].complete = completed;
         this.container[0].missing = missingi18n;
         this.container[0].setValue = setValue;
@@ -186,6 +197,10 @@ class InputTool extends InitMember {
 
         this.container.init.prototype.i18n = function (value) {
             return document.getElementById($(this).attr("id").replace('#', '')).i18n(value);
+        };
+
+        this.container.init.prototype.i18nObject = function (value) {
+            return document.getElementById($(this).attr("id").replace('#', '')).i18nObject(value);
         };
 
         this.container.init.prototype.complete = function () {

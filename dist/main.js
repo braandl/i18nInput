@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _MainController = _interopRequireDefault(require("./MainController"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27,7 +27,7 @@ function () {
   _createClass(i18nInputView, [{
     key: "i18nInputView",
     value: function i18nInputView(container) {
-      return new _MainController.default(container, this.langKeys);
+      return new _MainController["default"](container, this.langKeys);
     }
   }]);
 
@@ -35,9 +35,9 @@ function () {
 }();
 
 function i18n(container) {
-  return new _MainController.default(container);
+  return new _MainController["default"](container);
 }
 
 window.i18n = i18n;
 var _default = i18nInputView;
-exports.default = _default;
+exports["default"] = _default;

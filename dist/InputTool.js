@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _InitMember2 = _interopRequireDefault(require("./InitMember"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -165,6 +165,16 @@ function (_InitMember) {
         }
       };
 
+      var printResultsObject = function printResultsObject(lang) {
+        if (self.inputvalues !== undefined && self.inputvalues[lang] !== undefined) {
+          return self.inputvalues[lang];
+        } else if (self.inputvalues !== undefined) {
+          return self.main.codeTranslator.translateIsoAssocArrayToShortObject(self.inputvalues); //;self.main.codeTranslator.translateShortToIso(lang);
+        } else {
+          return "";
+        }
+      };
+
       var completed = function completed() {
         return missingi18n().length === 0;
       };
@@ -201,10 +211,10 @@ function (_InitMember) {
             }
 
             for (var i = 0; i < lng.length; i++) {
-              var short = self.main.codeTranslator.translateIsoToShort(lng[i]);
+              var _short = self.main.codeTranslator.translateIsoToShort(lng[i]);
 
-              if (self.main.isi18nRegistered(short)) {
-                self.inputvalues[short] = value[i];
+              if (self.main.isi18nRegistered(_short)) {
+                self.inputvalues[_short] = value[i];
               } else {
                 throw "Language " + lng + " is not registered with the View";
               }
@@ -213,10 +223,10 @@ function (_InitMember) {
             throw "Either both, or non argument must be of type Array";
           }
         } else {
-          var _short = self.main.codeTranslator.translateIsoToShort(lng);
+          var _short2 = self.main.codeTranslator.translateIsoToShort(lng);
 
-          if (self.main.isi18nRegistered(_short)) {
-            self.inputvalues[_short] = value;
+          if (self.main.isi18nRegistered(_short2)) {
+            self.inputvalues[_short2] = value;
           } else {
             throw "Language " + lng + " is not registered with the View";
           }
@@ -241,6 +251,7 @@ function (_InitMember) {
       };
 
       this.container[0].i18n = printResults;
+      this.container[0].i18nObject = printResultsObject;
       this.container[0].complete = completed;
       this.container[0].missing = missingi18n;
       this.container[0].setValue = setValue;
@@ -250,6 +261,10 @@ function (_InitMember) {
 
       this.container.init.prototype.i18n = function (value) {
         return document.getElementById($(this).attr("id").replace('#', '')).i18n(value);
+      };
+
+      this.container.init.prototype.i18nObject = function (value) {
+        return document.getElementById($(this).attr("id").replace('#', '')).i18nObject(value);
       };
 
       this.container.init.prototype.complete = function () {
@@ -290,7 +305,7 @@ function (_InitMember) {
   }]);
 
   return InputTool;
-}(_InitMember2.default);
+}(_InitMember2["default"]);
 
 var _default = InputTool;
-exports.default = _default;
+exports["default"] = _default;

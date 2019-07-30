@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _InitMember2 = _interopRequireDefault(require("./InitMember"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -325,8 +325,8 @@ function (_InitMember) {
 
   _createClass(CodeTranslator, [{
     key: "translateShortToIso",
-    value: function translateShortToIso(short) {
-      var res = this.i18nCodes[short];
+    value: function translateShortToIso(_short) {
+      var res = this.i18nCodes[_short];
 
       if (res !== null && res !== undefined) {
         return res;
@@ -342,6 +342,19 @@ function (_InitMember) {
       }
 
       var resultArray = [];
+      i18nArray.each(this, function (key, value) {
+        resultArray[this.translateShortToIso(key)] = value;
+      });
+      return resultArray;
+    }
+  }, {
+    key: "translateIsoAssocArrayToShortObject",
+    value: function translateIsoAssocArrayToShortObject(i18nArray) {
+      if (!Array.isArray(i18nArray)) {
+        throw "Input Parameter must be of Type Array";
+      }
+
+      var resultArray = {};
       i18nArray.each(this, function (key, value) {
         resultArray[this.translateShortToIso(key)] = value;
       });
@@ -376,7 +389,7 @@ function (_InitMember) {
   }]);
 
   return CodeTranslator;
-}(_InitMember2.default);
+}(_InitMember2["default"]);
 
 var _default = CodeTranslator;
-exports.default = _default;
+exports["default"] = _default;

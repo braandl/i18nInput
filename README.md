@@ -88,6 +88,14 @@ The create the control, use the i18nInputView function on the ID of the div.
     en_EN: "English", en_US: "Different English", 
     de_AT: "Anderes Deutsch"]*/
 
+
+ // Prints all filled in results. Missing fields are not returned.
+ $('#my_i18n').i18nObject();
+ <- Object
+    /*{de_DE: "Deutsch", nl_NL: "Nederlands", 
+    en_EN: "English", en_US: "Different English", 
+    de_AT: "Anderes Deutsch"}*/
+
  // Prints all languages that were not filled in.
  $('#my_i18n').missing();
  <- Array

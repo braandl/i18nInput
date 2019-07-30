@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _InitMember2 = _interopRequireDefault(require("./InitMember"));
 
@@ -13,7 +13,7 @@ var _InputTool = _interopRequireDefault(require("./InputTool"));
 
 var _CodeTranslator = _interopRequireDefault(require("./CodeTranslator"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -74,17 +74,17 @@ function (_InitMember) {
   _createClass(MainController, [{
     key: "initInputTool",
     value: function initInputTool() {
-      this.inputTool = new _InputTool.default(this.container, this);
+      this.inputTool = new _InputTool["default"](this.container, this);
     }
   }, {
     key: "initFlagsTool",
     value: function initFlagsTool(langKeys) {
-      this.flagsTool = new _FlagsTool.default(this.container, this, langKeys);
+      this.flagsTool = new _FlagsTool["default"](this.container, this, langKeys);
     }
   }, {
     key: "initCodeTranslator",
     value: function initCodeTranslator() {
-      this.codeTranslator = new _CodeTranslator.default(this.container, this);
+      this.codeTranslator = new _CodeTranslator["default"](this.container, this);
     }
   }, {
     key: "isi18nRegistered",
@@ -141,7 +141,7 @@ function (_InitMember) {
   }]);
 
   return MainController;
-}(_InitMember2.default);
+}(_InitMember2["default"]);
 
 var _default = MainController;
-exports.default = _default;
+exports["default"] = _default;
