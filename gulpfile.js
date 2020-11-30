@@ -103,8 +103,15 @@ gulp.task('cleanPkg', function(done) {
     done();
 });
 
-gulp.task('default', ['mergejs', 'css', 'copy']);
-gulp.task('pkg', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg']);
+//gulp.task('default', ['mergejs', 'css', 'copy'], () => {
+//    console.log('done');
+//});
+//gulp.task('pkg', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg'], () => {
+//    console.log('done');
+//});
+
+
+gulp.task('default', gulp.series('cleanPkg', 'packjs', 'cssPkg', 'copyPkg', gulp.series('mergejs', 'css', 'copy')));
 
 function swallowError(error) {
     console.log(error.toString());
