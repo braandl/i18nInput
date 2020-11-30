@@ -21,6 +21,7 @@ var gulp = require('gulp'),
 
 var config = {
     js: {
+        base: 'src/',
         src: './js/**/*.js',       // Entry point
         srcPkg: './js/main.js',       // Entry point
         outputDir: './dist/',  // Directory to save bundle to
@@ -28,43 +29,45 @@ var config = {
         outputFile: 'i18nInput.js' // Name to use for bundle
     },
     flags : {
+        base: 'src/',
         src:  ['flags/**/*.svg'],
         dst: './dist/flags/',
         dstPkg: './pkg/flags/'
     },
     css : {
+        base: 'src/',
         outputDir: './dist/',  // Directory to save bundle to
         outputDirPkg: './pkg/',  // Directory to save bundle to
     }
 };
 
 gulp.task('css', function (done) {
-    gulp.src('css/**/*.css')
+    gulp.src('css/**/*.css', {base: config.css.base})
         .pipe(concatCss("style.css"))
         .pipe(gulp.dest(config.css.outputDir));
 });
 
 gulp.task('cssPkg', function (done) {
-    gulp.src('css/**/*.css')
+    gulp.src('css/**/*.css', {base: config.css.base})
         .pipe(concatCss("style.css"))
         .pipe(gulp.dest(config.css.outputDirPkg));
 });
 
 
 gulp.task('copy', function (done) {
-    gulp.src(config.flags.src)
+    gulp.src(config.flags.src, {base: config.flags.base})
         .pipe(gulp.dest(config.flags.dst)).on('error', swallowError);
     done();
 });
 
 gulp.task('copyPkg', function (done) {
-    gulp.src(config.flags.src)
+    gulp.src(config.flags.src, {base: config.flags.base})
     .pipe(gulp.dest(config.flags.dstPkg)).on('error', swallowError);
     done();
 });
 
 gulp.task('mergejs', function (done) {
-    gulp.src(config.js.src)
+    gulp.src(config.js.src, {base: config.js.base})
         .pipe(babel({
             presets: ['@babel/env']
         }))
