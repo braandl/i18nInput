@@ -1,24 +1,19 @@
 /**
  * Created by sbrandt on 05.07.17.
  */
-import InitMember from './InitMember';
 import FlagsTool from './FlagsTool';
 import InputTool from "./InputTool";
 import CodeTranslator from "./CodeTranslator";
 
-class MainController extends InitMember {
-
-    initMember() {
-        this.flagsTool = null;
-        this.container = null;
-        this.inputTool = null;
-        this.codeTranslator = null;
-
-        this.failHandler = null;
-    }
+class MainController
+{
+    flagsTool = null;
+    container = null;
+    inputTool = null;
+    codeTranslator = null;
+    failHandler = null;
 
     constructor(container, langKeys) {
-        super();
         this.langKeys = langKeys;
         this.container = $("#" + container);
         this.initCodeTranslator();

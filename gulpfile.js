@@ -103,14 +103,8 @@ gulp.task('cleanPkg', function(done) {
     done();
 });
 
-gulp.task('default', ['mergejs', 'css', 'copy'], function () {
-    console.log('done');
-}).on('error', swallowError);
-
-
-gulp.task('pkg', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg'], function () {
-    console.log('done');
-}).on('error', swallowError);
+gulp.task('default', ['mergejs', 'css', 'copy']);
+gulp.task('pkg', ['cleanPkg', 'packjs', 'cssPkg', 'copyPkg']);
 
 function swallowError(error) {
     console.log(error.toString());

@@ -9,15 +9,9 @@ var _InitMember2 = _interopRequireDefault(require("./InitMember"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -27,10 +21,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var InputTool =
-/*#__PURE__*/
-function (_InitMember) {
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var InputTool = /*#__PURE__*/function (_InitMember) {
   _inherits(InputTool, _InitMember);
+
+  var _super = _createSuper(InputTool);
 
   _createClass(InputTool, [{
     key: "initMember",
@@ -38,38 +42,15 @@ function (_InitMember) {
       this.container = null;
       this.main = null;
       this.input = null;
-      this.inputvalues = [];
+      this.inputvalues = {};
       this.inputStyleClasses = "";
 
-      this.inputvalues.size = function () {
-        var size = 0,
-            key;
-
-        for (key in this) {
-          if (this.hasOwnProperty(key) && key !== "size" && key !== "each" && key !== "hasKey") size++;
-        }
-
-        return size;
-      };
-
       this.inputvalues.each = function (ctx, callable) {
-        var key;
-
-        for (key in this) {
+        for (var key in this) {
           if (this.hasOwnProperty(key) && key !== "size" && key !== "each" && key !== "hasKey") {
             callable.apply(ctx, [key, this[key]]);
           }
         }
-      };
-
-      this.inputvalues.hasKey = function (value) {
-        for (var key in this) {
-          if (key === value) {
-            return true;
-          }
-        }
-
-        return false;
       };
     }
   }]);
@@ -79,7 +60,7 @@ function (_InitMember) {
 
     _classCallCheck(this, InputTool);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(InputTool).call(this));
+    _this = _super.call(this);
     _this.container = el;
 
     if (el.attr("input-class") !== undefined) {
@@ -122,19 +103,21 @@ function (_InitMember) {
   _createClass(InputTool, [{
     key: "initKeyLogging",
     value: function initKeyLogging() {
-      var self = this;
-      this.input.keyup(function () {
-        var currentLanguage = self.main.flagsTool.languages[self.main.flagsTool.currentFlag];
-        self.inputvalues[currentLanguage] = $(this).val();
+      var _this2 = this;
+
+      this.input.on('keyup', function () {
+        var currentLanguage = _this2.main.flagsTool.languages[_this2.main.flagsTool.currentFlag];
+        _this2.inputvalues[currentLanguage] = $(_this2.input).val();
       });
     }
   }, {
     key: "initInputChange",
     value: function initInputChange() {
-      var self = this;
-      this.input.change(function () {
-        var currentLanguage = self.main.flagsTool.languages[self.main.flagsTool.currentFlag];
-        self.inputvalues[currentLanguage] = $(this).val();
+      var _this3 = this;
+
+      this.input.on('change', function () {
+        var currentLanguage = _this3.main.flagsTool.languages[_this3.main.flagsTool.currentFlag];
+        _this3.inputvalues[currentLanguage] = $(_this3.input).val();
       });
     }
   }, {
@@ -153,23 +136,23 @@ function (_InitMember) {
   }, {
     key: "addElementMethods",
     value: function addElementMethods() {
-      var self = this;
+      var _this4 = this;
 
       var printResults = function printResults(lang) {
-        if (self.inputvalues !== undefined && self.inputvalues[lang] !== undefined) {
-          return self.inputvalues[lang];
-        } else if (self.inputvalues !== undefined) {
-          return self.main.codeTranslator.translateIsoAssocArrayToShort(self.inputvalues); //;self.main.codeTranslator.translateShortToIso(lang);
+        if (_this4.inputvalues !== undefined && _this4.inputvalues[lang] !== undefined) {
+          return _this4.inputvalues[lang];
+        } else if (_this4.inputvalues !== undefined) {
+          return _this4.main.codeTranslator.translateIsoAssocArrayToShort(_this4.inputvalues);
         } else {
           return "";
         }
       };
 
       var printResultsObject = function printResultsObject(lang) {
-        if (self.inputvalues !== undefined && self.inputvalues[lang] !== undefined) {
-          return self.inputvalues[lang];
-        } else if (self.inputvalues !== undefined) {
-          return self.main.codeTranslator.translateIsoAssocArrayToShortObject(self.inputvalues); //;self.main.codeTranslator.translateShortToIso(lang);
+        if (_this4.inputvalues !== undefined && _this4.inputvalues[lang] !== undefined) {
+          return _this4.inputvalues[lang];
+        } else if (_this4.inputvalues !== undefined) {
+          return _this4.main.codeTranslator.translateIsoAssocArrayToShortObject(_this4.inputvalues);
         } else {
           return "";
         }
@@ -182,13 +165,13 @@ function (_InitMember) {
       var missingi18n = function missingi18n() {
         var missing = [];
 
-        for (var i = 0; i < self.main.flagsTool.languages.length; i++) {
-          if (!self.inputvalues.hasKey(self.main.flagsTool.languages[i]) || self.inputvalues[self.main.flagsTool.languages[i]] === undefined || self.inputvalues[self.main.flagsTool.languages[i]].length === 0) {
-            missing.push(self.main.flagsTool.languages[i]);
+        for (var i = 0; i < _this4.main.flagsTool.languages.length; i++) {
+          if (!(_this4.main.flagsTool.languages[i] in _this4.inputvalues) || _this4.inputvalues[_this4.main.flagsTool.languages[i]] === undefined || _this4.inputvalues[_this4.main.flagsTool.languages[i]].length === 0) {
+            missing.push(_this4.main.flagsTool.languages[i]);
           }
         }
 
-        return self.main.codeTranslator.translateIsoArrayToShort(missing);
+        return _this4.main.codeTranslator.translateIsoArrayToShort(missing);
       };
 
       var setValueAuto = function setValueAuto(value) {
@@ -197,7 +180,7 @@ function (_InitMember) {
             setValue(key, value[key]);
           });
         } else {
-          self.input.val(value);
+          _this4.input.val(value);
         }
       };
 
@@ -211,10 +194,10 @@ function (_InitMember) {
             }
 
             for (var i = 0; i < lng.length; i++) {
-              var _short = self.main.codeTranslator.translateIsoToShort(lng[i]);
+              var _short = _this4.main.codeTranslator.translateIsoToShort(lng[i]);
 
-              if (self.main.isi18nRegistered(_short)) {
-                self.inputvalues[_short] = value[i];
+              if (_this4.main.isi18nRegistered(_short)) {
+                _this4.inputvalues[_short] = value[i];
               } else {
                 throw "Language " + lng + " is not registered with the View";
               }
@@ -223,30 +206,31 @@ function (_InitMember) {
             throw "Either both, or non argument must be of type Array";
           }
         } else {
-          var _short2 = self.main.codeTranslator.translateIsoToShort(lng);
+          var _short2 = _this4.main.codeTranslator.translateIsoToShort(lng);
 
-          if (self.main.isi18nRegistered(_short2)) {
-            self.inputvalues[_short2] = value;
+          if (_this4.main.isi18nRegistered(_short2)) {
+            _this4.inputvalues[_short2] = value;
           } else {
             throw "Language " + lng + " is not registered with the View";
           }
         }
 
-        self.changedInputView();
+        _this4.changedInputView();
+
         return true;
       };
 
       var availablei18n = function availablei18n() {
-        return self.main.codeTranslator.i18nCodes.getAllProps();
+        return _this4.main.codeTranslator.i18nCodes.getAllProps();
       };
 
       var registerFormIncompleteHandler = function registerFormIncompleteHandler(handler) {
-        if (typeof handler !== "function") {
-          console.warn("The Handler must be of type function");
+        if (typeof handler !== 'function') {
+          console.warn('The Handler must be of type function');
           return false;
         }
 
-        self.main.failHandler = handler;
+        _this4.main.failHandler = handler;
         return true;
       };
 

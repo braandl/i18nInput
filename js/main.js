@@ -3,8 +3,7 @@
  */
 import MainController from './MainController';
 
-class i18nInputView {
-
+export default class i18nInputView {
   constructor(langKeys){
     this.langKeys = langKeys;
   }
@@ -14,10 +13,6 @@ class i18nInputView {
   }
 }
 
-function i18n(container) {
+window.i18n = function(container) {
   return new MainController(container);
 }
-
-window.i18n = i18n;
-
-export default i18nInputView;

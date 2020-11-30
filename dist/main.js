@@ -15,9 +15,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var i18nInputView =
-/*#__PURE__*/
-function () {
+var i18nInputView = /*#__PURE__*/function () {
   function i18nInputView(langKeys) {
     _classCallCheck(this, i18nInputView);
 
@@ -34,10 +32,8 @@ function () {
   return i18nInputView;
 }();
 
-function i18n(container) {
-  return new _MainController["default"](container);
-}
+exports["default"] = i18nInputView;
 
-window.i18n = i18n;
-var _default = i18nInputView;
-exports["default"] = _default;
+window.i18n = function (container) {
+  return new _MainController["default"](container);
+};

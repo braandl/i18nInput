@@ -14,9 +14,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Created by sbrandt on 05.07.17.
  */
-var InitMember =
-/*#__PURE__*/
-function () {
+var InitMember = /*#__PURE__*/function () {
   _createClass(InitMember, [{
     key: "initMember",
     value: function initMember() {}

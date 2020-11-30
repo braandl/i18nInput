@@ -1,49 +1,15 @@
 /**
  * Created by sbrandt on 05.07.17.
  */
-import InitMember from "./InitMember";
-class InputTool extends InitMember {
-
-    initMember() {
-        this.container = null;
-        this.main = null;
-        this.input = null;
-        this.inputvalues = [];
-        this.inputStyleClasses = "";
-        this.inputvalues.size = function() {
-            let size = 0, key;
-            for (key in this) {
-                if (this.hasOwnProperty(key)
-                    && key !== "size"
-                    && key !== "each"
-                    && key !== "hasKey") size++;
-            }
-            return size;
-        };
-
-        this.inputvalues.each = function (ctx, callable) {
-            let key;
-            for (key in this) {
-                if (this.hasOwnProperty(key)
-                    && key !== "size"
-                    && key !== "each"
-                    && key !== "hasKey") {
-                    callable.apply(ctx, [key, this[key]]);
-                }
-            }
-        };
-        this.inputvalues.hasKey = function( value ) {
-            for(let key in this ) {
-                if( key === value ) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+class InputTool
+{
+    container = null;
+    main = null;
+    input = null;
+    inputvalues = {};
+    inputStyleClasses = "";
 
     constructor(el, loader) {
-        super();
         this.container = el;
 
         if (el.attr("input-class") !== undefined) {
@@ -69,18 +35,16 @@ class InputTool extends InitMember {
 
 
     initKeyLogging() {
-        const self = this;
-        this.input.keyup(function () {
-            let currentLanguage = self.main.flagsTool.languages[self.main.flagsTool.currentFlag];
-            self.inputvalues[currentLanguage] = $(this).val();
+        this.input.on('keyup', () => {
+            let currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
+            this.inputvalues[currentLanguage] = $(this.input).val();
         });
     }
 
     initInputChange() {
-        const self = this;
-        this.input.change(function() {
-            let currentLanguage = self.main.flagsTool.languages[self.main.flagsTool.currentFlag];
-            self.inputvalues[currentLanguage] = $(this).val();
+        this.input.on( 'change', () => {
+            let currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
+            this.inputvalues[currentLanguage] = $(this.input).val();
         });
     }
 
@@ -95,23 +59,21 @@ class InputTool extends InitMember {
     }
 
     addElementMethods() {
-        const self = this;
-
-        const printResults = function (lang) {
-            if (self.inputvalues !== undefined && self.inputvalues[lang] !== undefined) {
-                return self.inputvalues[lang];
-            } else if (self.inputvalues !== undefined) {
-                return self.main.codeTranslator.translateIsoAssocArrayToShort(self.inputvalues);//;self.main.codeTranslator.translateShortToIso(lang);
+        const printResults = lang => {
+            if (this.inputvalues !== undefined && this.inputvalues[lang] !== undefined) {
+                return this.inputvalues[lang];
+            } else if (this.inputvalues !== undefined) {
+                return this.main.codeTranslator.translateIsoAssocArrayToShort(this.inputvalues);
             } else {
                 return "";
             }
         };
 
-        const printResultsObject = function (lang) {
-            if (self.inputvalues !== undefined && self.inputvalues[lang] !== undefined) {
-                return self.inputvalues[lang];
-            } else if (self.inputvalues !== undefined) {
-                return self.main.codeTranslator.translateIsoAssocArrayToShortObject(self.inputvalues);//;self.main.codeTranslator.translateShortToIso(lang);
+        const printResultsObject = lang => {
+            if (this.inputvalues !== undefined && this.inputvalues[lang] !== undefined) {
+                return this.inputvalues[lang];
+            } else if (this.inputvalues !== undefined) {
+                return this.main.codeTranslator.translateIsoAssocArrayToShortObject(this.inputvalues);
             } else {
                 return "";
             }
@@ -121,29 +83,29 @@ class InputTool extends InitMember {
             return missingi18n().length === 0;
         };
 
-        const missingi18n = function() {
+        const missingi18n = () => {
             let missing = [];
 
-            for (let i = 0; i < self.main.flagsTool.languages.length; i++) {
-                if (!self.inputvalues.hasKey(self.main.flagsTool.languages[i]) || self.inputvalues[self.main.flagsTool.languages[i]] === undefined || self.inputvalues[self.main.flagsTool.languages[i]].length === 0) {
-                    missing.push(self.main.flagsTool.languages[i]);
+            for (let i = 0; i < this.main.flagsTool.languages.length; i++) {
+                if (!(this.main.flagsTool.languages[i] in this.inputvalues) || this.inputvalues[this.main.flagsTool.languages[i]] === undefined || this.inputvalues[this.main.flagsTool.languages[i]].length === 0) {
+                    missing.push(this.main.flagsTool.languages[i]);
                 }
             }
 
-            return self.main.codeTranslator.translateIsoArrayToShort(missing);
+            return this.main.codeTranslator.translateIsoArrayToShort(missing);
         };
 
-        const setValueAuto = function (value) {
-          if(typeof value === 'object'){
+        const setValueAuto = value => {
+          if (typeof value === 'object'){
             Object.keys(value).forEach(function(key) {
               setValue(key, value[key]);
             });
-          }else {
-            self.input.val(value);
+          } else {
+            this.input.val(value);
           }
         }
 
-        const setValue = function(lng, value) {
+        const setValue = (lng, value) => {
             console.log(lng, value);
             if (lng instanceof Array) {
                 if (value instanceof  Array) {
@@ -151,9 +113,9 @@ class InputTool extends InitMember {
                         throw("Both input arrays must have the same size");
                     }
                     for (let i = 0; i < lng.length; i++) {
-                        let short = self.main.codeTranslator.translateIsoToShort(lng[i]);
-                        if (self.main.isi18nRegistered(short)) {
-                            self.inputvalues[short] = value[i];
+                        let short = this.main.codeTranslator.translateIsoToShort(lng[i]);
+                        if (this.main.isi18nRegistered(short)) {
+                            this.inputvalues[short] = value[i];
                         } else {
                             throw("Language " + lng + " is not registered with the View");
                         }
@@ -162,27 +124,27 @@ class InputTool extends InitMember {
                     throw ("Either both, or non argument must be of type Array");
                 }
             } else {
-                let short = self.main.codeTranslator.translateIsoToShort(lng);
-                if (self.main.isi18nRegistered(short)) {
-                    self.inputvalues[short] = value;
+                let short = this.main.codeTranslator.translateIsoToShort(lng);
+                if (this.main.isi18nRegistered(short)) {
+                    this.inputvalues[short] = value;
                 } else {
                     throw("Language " + lng + " is not registered with the View");
                 }
             }
-            self.changedInputView();
+            this.changedInputView();
             return true;
         };
 
-        const availablei18n = function() {
-            return self.main.codeTranslator.i18nCodes.getAllProps();
+        const availablei18n = () => {
+            return this.main.codeTranslator.i18nCodes.getAllProps();
         };
 
-        const registerFormIncompleteHandler = function(handler) {
-            if (typeof handler !== "function") {
-                console.warn("The Handler must be of type function");
+        const registerFormIncompleteHandler = handler => {
+            if (typeof handler !== 'function') {
+                console.warn('The Handler must be of type function');
                 return false;
             }
-            self.main.failHandler = handler;
+            this.main.failHandler = handler;
             return true;
         };
 
