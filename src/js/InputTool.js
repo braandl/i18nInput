@@ -3,13 +3,13 @@
  */
 class InputTool
 {
-    container = null;
-    main = null;
-    input = null;
-    inputvalues = {};
-    inputStyleClasses = "";
 
     constructor(el, loader) {
+        this.container = null;
+        this.main = null;
+        this.input = null;
+        this.inputvalues = {};
+        this.inputStyleClasses = "";
         this.container = el;
 
         if (el.attr("input-class") !== undefined) {
