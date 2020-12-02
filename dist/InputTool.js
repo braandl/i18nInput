@@ -1,25 +1,24 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 /**
  * Created by sbrandt on 05.07.17.
  */
 var InputTool = /*#__PURE__*/function () {
   function InputTool(el, loader) {
-    _classCallCheck(this, InputTool);
-
+    (0, _classCallCheck2["default"])(this, InputTool);
     this.container = null;
     this.main = null;
     this.input = null;
@@ -57,7 +56,7 @@ var InputTool = /*#__PURE__*/function () {
     this.initInputChange();
   }
 
-  _createClass(InputTool, [{
+  (0, _createClass2["default"])(InputTool, [{
     key: "initKeyLogging",
     value: function initKeyLogging() {
       var _this = this;
@@ -132,7 +131,7 @@ var InputTool = /*#__PURE__*/function () {
       };
 
       var setValueAuto = function setValueAuto(value) {
-        if (_typeof(value) === 'object') {
+        if ((0, _typeof2["default"])(value) === 'object') {
           Object.keys(value).forEach(function (key) {
             setValue(key, value[key]);
           });
@@ -244,7 +243,6 @@ var InputTool = /*#__PURE__*/function () {
       };
     }
   }]);
-
   return InputTool;
 }();
 

@@ -1,9 +1,15 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _FlagsTool = _interopRequireDefault(require("./FlagsTool"));
 
@@ -11,18 +17,12 @@ var _InputTool = _interopRequireDefault(require("./InputTool"));
 
 var _CodeTranslator = _interopRequireDefault(require("./CodeTranslator"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
+/**
+ * Created by sbrandt on 05.07.17.
+ */
 var MainController = /*#__PURE__*/function () {
   function MainController(container, langKeys) {
-    _classCallCheck(this, MainController);
-
+    (0, _classCallCheck2["default"])(this, MainController);
     this.flagsTool = null;
     this.container = null;
     this.inputTool = null;
@@ -37,7 +37,7 @@ var MainController = /*#__PURE__*/function () {
     this.inputTool.changedInputView();
   }
 
-  _createClass(MainController, [{
+  (0, _createClass2["default"])(MainController, [{
     key: "initInputTool",
     value: function initInputTool() {
       this.inputTool = new _InputTool["default"](this.container, this);
@@ -105,7 +105,6 @@ var MainController = /*#__PURE__*/function () {
       }
     }
   }]);
-
   return MainController;
 }();
 

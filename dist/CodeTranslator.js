@@ -1,24 +1,25 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 /**
  * Created by sbrandt on 05.07.17.
  */
 var CodeTranslator = /*#__PURE__*/function () {
   function CodeTranslator() {
-    _classCallCheck(this, CodeTranslator);
-
-    i18nCodes = {
+    (0, _classCallCheck2["default"])(this, CodeTranslator);
+    (0, _defineProperty2["default"])(this, "i18nCodes", {
       "af": "fa_AF",
       "al": "al_AL",
       "dz": "ar_DZ",
@@ -269,10 +270,10 @@ var CodeTranslator = /*#__PURE__*/function () {
       "zm": "en_ZM",
       "zw": "em_ZW",
       "ax": "sv_AX"
-    };
+    });
   }
 
-  _createClass(CodeTranslator, [{
+  (0, _createClass2["default"])(CodeTranslator, [{
     key: "translateShortToIso",
     value: function translateShortToIso(_short) {
       if (_short in this.i18nCodes && this.i18nCodes[_short]) {
@@ -347,7 +348,6 @@ var CodeTranslator = /*#__PURE__*/function () {
       return null;
     }
   }]);
-
   return CodeTranslator;
 }();
 
