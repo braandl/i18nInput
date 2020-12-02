@@ -61,7 +61,11 @@ gulp.task('copyPkg', function () {
 gulp.task('mergejs', function () {
     return gulp.src(config.js.src)
         .pipe(babel({
-            presets: ['@babel/env']
+            presets: ['@babel/preset-env'],
+            plugins: [
+                '@babel/plugin-transform-runtime',
+                '@babel/plugin-proposal-class-properties',
+            ],
         }))
         .pipe(gulp.dest(config.js.outputDir))
 });
@@ -72,19 +76,23 @@ gulp.task('packjs', function () {
             entries: [config.js.srcPkg]
         }).transform(babelify.configure({
             presets: [[
-                '@babel/env',
-            {
-                "useBuiltIns": 'usage',
-                "corejs": {"version": 3, "proposals": true},
-                "debug": false,
-                "targets": {
-                "esmodules": false,
-                "browsers": [
-                    "> 0.25%, not dead"
-                ]
+                '@babel/preset-env',
+                {
+                    "useBuiltIns": 'usage',
+                    "corejs": {"version": 3, "proposals": true},
+                    "debug": false,
+                    "targets": {
+                        "esmodules": false,
+                        "browsers": [
+                            "> 0.25%, not dead"
+                        ]
+                    }
                 }
-            }
-            ]]
+            ]],
+            plugins: [
+                '@babel/plugin-transform-runtime',
+                '@babel/plugin-proposal-class-properties',
+            ],
         }))
         .bundle()
         .pipe(source(config.js.srcPkg))
