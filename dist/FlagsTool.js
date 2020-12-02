@@ -1,15 +1,9 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
-var _InitMember2 = _interopRequireDefault(require("./InitMember"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17,54 +11,30 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var FlagsTool = /*#__PURE__*/function (_InitMember) {
-  _inherits(FlagsTool, _InitMember);
-
-  var _super = _createSuper(FlagsTool);
-
-  _createClass(FlagsTool, [{
-    key: "initMember",
-    value: function initMember() {
-      this.FADEIN_SPEED = 400;
-      this.FADEIN_DELAY = 15;
-      this.main = null;
-      this.flaggerChooser = null;
-      this.container = null;
-      this.languages = [];
-      this.currentFlag = 0;
-      this.isAnimating = false;
-      this.inputStyleClasses = "";
-      this.pickerClass = "";
-      this.hoverAnimationTimeout = null;
-      this.flaggerLeaveAnimationTimeout = null;
-      this.flaggerCancelAnimationTimeout = null;
-      this.placeHolderType = "string";
-      this.placeholder = "";
-    }
-  }]);
-
+/**
+ * Created by sbrandt on 05.07.17.
+ */
+var FlagsTool = /*#__PURE__*/function () {
   function FlagsTool(el, loader) {
-    var _this;
-
     _classCallCheck(this, FlagsTool);
 
-    _this = _super.call(this);
-    _this.container = el;
-    _this.main = loader;
+    this.FADEIN_SPEED = 400;
+    this.FADEIN_DELAY = 15;
+    this.main = null;
+    this.flaggerChooser = null;
+    this.container = null;
+    this.languages = [];
+    this.currentFlag = 0;
+    this.isAnimating = false;
+    this.inputStyleClasses = "";
+    this.pickerClass = "";
+    this.hoverAnimationTimeout = null;
+    this.flaggerLeaveAnimationTimeout = null;
+    this.flaggerCancelAnimationTimeout = null;
+    this.placeHolderType = "string";
+    this.placeholder = "";
+    this.container = el;
+    this.main = loader;
     var lng = null;
 
     if (el.attr('languages') !== undefined && loader.langKeys === undefined) {
@@ -77,25 +47,21 @@ var FlagsTool = /*#__PURE__*/function (_InitMember) {
     for (var i = 0; i < lng.length; i++) {
       var currentLng = loader.codeTranslator.translateIsoToShort(lng[i]);
 
-      if (_this.languages.indexOf(currentLng) === -1) {
-        _this.languages.push(currentLng);
+      if (this.languages.indexOf(currentLng) === -1) {
+        this.languages.push(currentLng);
       } else {
         console.warn("Languages can not be added twice. Second '" + lng[i] + "' was ignored.");
       }
     }
 
     if (el.attr('animate') !== undefined && (el.attr('animate') === "false" || Boolean(el.attr('animate')) === false)) {
-      _this.FADEIN_SPEED = 0;
-      _this.FADEIN_DELAY = 0;
+      this.FADEIN_SPEED = 0;
+      this.FADEIN_DELAY = 0;
     }
 
-    _this.loadStyles();
-
-    _this.parsePlaceholder();
-
-    _this.initFlagController();
-
-    return _this;
+    this.loadStyles();
+    this.parsePlaceholder();
+    this.initFlagController();
   }
 
   _createClass(FlagsTool, [{
@@ -217,7 +183,7 @@ var FlagsTool = /*#__PURE__*/function (_InitMember) {
   }, {
     key: "loadFlags",
     value: function loadFlags() {
-      var _this2 = this;
+      var _this = this;
 
       var self = this;
 
@@ -245,14 +211,14 @@ var FlagsTool = /*#__PURE__*/function (_InitMember) {
       var itemsPerRow = Math.floor((this.flaggerChooser.innerWidth() - this.flaggerChooser.css("padding") * 2) / (this.flagger.outerWidth() + 2));
 
       var _loop = function _loop(i) {
-        if (i === _this2.currentFlag) {
+        if (i === _this.currentFlag) {
           return "continue";
         }
 
-        _this2.flaggerChooser.append('<div style="float:right; display: none; padding:0 0 2px 2px;" ><span title="Language: ' + _this2.main.codeTranslator.translateShortToIso(_this2.languages[i]) + '" class="flag-icon flag-icon-' + _this2.languages[i] + '"></span></div>'); // Select the Current Item
+        _this.flaggerChooser.append('<div style="float:right; display: none; padding:0 0 2px 2px;" ><span title="Language: ' + _this.main.codeTranslator.translateShortToIso(_this.languages[i]) + '" class="flag-icon flag-icon-' + _this.languages[i] + '"></span></div>'); // Select the Current Item
 
 
-        var current = $(_this2.flaggerChooser.children()[_this2.flaggerChooser.children().length - 1]);
+        var current = $(_this.flaggerChooser.children()[_this.flaggerChooser.children().length - 1]);
         current.hover(function () {
           $(this).css({
             "cursor": "pointer"
@@ -268,7 +234,7 @@ var FlagsTool = /*#__PURE__*/function (_InitMember) {
         });
 
         if (i % itemsPerRow === 0) {
-          _this2.flaggerChooser.append("<div style='clear: both;'></div>");
+          _this.flaggerChooser.append("<div style='clear: both;'></div>");
         }
       };
 
@@ -294,7 +260,7 @@ var FlagsTool = /*#__PURE__*/function (_InitMember) {
   }]);
 
   return FlagsTool;
-}(_InitMember2["default"]);
+}();
 
 var _default = FlagsTool;
 exports["default"] = _default;

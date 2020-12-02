@@ -3,23 +3,24 @@
  */
 class FlagsTool
 {
-    FADEIN_SPEED = 400;
-    FADEIN_DELAY = 15;
-    main = null;
-    flaggerChooser = null;
-    container = null;
-    languages = [];
-    currentFlag = 0;
-    isAnimating = false;
-    inputStyleClasses = "";
-    pickerClass = "";
-    hoverAnimationTimeout = null;
-    flaggerLeaveAnimationTimeout = null;
-    flaggerCancelAnimationTimeout = null;
-    placeHolderType = "string";
-    placeholder = "";
 
     constructor(el, loader) {
+
+        this.FADEIN_SPEED = 400;
+        this.FADEIN_DELAY = 15;
+        this.main = null;
+        this.flaggerChooser = null;
+        this.container = null;
+        this.languages = [];
+        this.currentFlag = 0;
+        this.isAnimating = false;
+        this.inputStyleClasses = "";
+        this.pickerClass = "";
+        this.hoverAnimationTimeout = null;
+        this.flaggerLeaveAnimationTimeout = null;
+        this.flaggerCancelAnimationTimeout = null;
+        this.placeHolderType = "string";
+        this.placeholder = "";
         this.container = el;
         this.main = loader;
         let lng = null;

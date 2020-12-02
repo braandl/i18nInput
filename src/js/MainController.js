@@ -7,13 +7,13 @@ import CodeTranslator from "./CodeTranslator";
 
 class MainController
 {
-    flagsTool = null;
-    container = null;
-    inputTool = null;
-    codeTranslator = null;
-    failHandler = null;
 
     constructor(container, langKeys) {
+        this.flagsTool = null;
+        this.container = null;
+        this.inputTool = null;
+        this.codeTranslator = null;
+        this.failHandler = null;
         this.langKeys = langKeys;
         this.container = $("#" + container);
         this.initCodeTranslator();
