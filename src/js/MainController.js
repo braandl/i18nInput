@@ -7,7 +7,6 @@ import CodeTranslator from "./CodeTranslator";
 
 class MainController
 {
-
     constructor(container, langKeys) {
         this.flagsTool = null;
         this.container = null;
