@@ -136,7 +136,7 @@ class InputTool
         };
 
         const availablei18n = () => {
-            return this.main.codeTranslator.i18nCodes.getAllProps();
+            return this.main.codeTranslator.getAllLongs();
         };
 
         const registerFormIncompleteHandler = handler => {

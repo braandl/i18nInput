@@ -256,85 +256,63 @@ class CodeTranslator
         "ax":"sv_AX"
     }
 
-    constructor () {
-        this.i18nCodes.findKeyByValue = function( value ) {
-            for(let prop in this ) {
-                if( this.hasOwnProperty( prop ) ) {
-                    if( this[ prop ] === value ) {
-                        return prop;
-                    }
-                }
-            }
-            return null;
-        };
-
-
-        this.i18nCodes.getAllProps = function() {
-            let res = [];
-            for(let prop in this ) {
-                if( this.hasOwnProperty( prop ) ) {
-                    res.push(this[prop]);
-                }
-            }
-            return res;
-        };
-    }
-
     translateShortToIso(short) {
-        let res =  this.i18nCodes[short];
-        if (res !== null && res !== undefined){
-            return res;
+        if (short in this.i18nCodes && this.i18nCodes[short]){
+            return this.i18nCodes[short];
         } else {
-            throw("Selected Element Seems not to be valid");
+            throw('Selected Element Seems not to be valid');
         }
     }
 
-    translateIsoAssocArrayToShort(i18nArray) {
-        if (!Array.isArray(i18nArray)) {
-            throw ("Input Parameter must be of Type Array");
+    translateIsoAssocArrayToShort(inputValues) {
+        const resultArray = [];
+        for (const key in inputValues) {
+            resultArray[this.translateShortToIso(key)] = inputValues[key];
         }
-
-        let resultArray = [];
-        i18nArray.each(this, function (key, value) {
-            resultArray[this.translateShortToIso(key)] = value;
-        });
-
         return resultArray;
     }
 
-    translateIsoAssocArrayToShortObject(i18nArray) {
-        if (!Array.isArray(i18nArray)) {
-            throw ("Input Parameter must be of Type Array");
+    translateIsoAssocArrayToShortObject(inputValues) {
+        const resultArray ={};
+        for (const key in inputValues) {
+            resultArray[this.translateShortToIso(key)] = inputValues[key];
         }
-
-        let resultArray ={};
-        i18nArray.each(this, function (key, value) {
-            resultArray[this.translateShortToIso(key)] = value;
-        });
-
         return resultArray;
     }
 
-    translateIsoArrayToShort(i18nArray) {
-        if (!Array.isArray(i18nArray)) {
-            throw ("Input Parameter must be of Type Array");
+    translateIsoArrayToShort(inputValues) {
+        const resultArray = [];
+        for (const key in inputValues) {
+            resultArray.push(this.translateShortToIso(inputValues[key]));
         }
-
-        let resultArray = [];
-        for (let i = 0; i < i18nArray.length; i++) {
-            resultArray.push(this.translateShortToIso(i18nArray[i]));
-        }
-
         return resultArray;
     }
 
     translateIsoToShort(i18n) {
-        let res = this.i18nCodes.findKeyByValue(i18n);
+        let res = this._findShortByValue(i18n);
         if (res !== null && res !== undefined){
             return res;
         } else {
-            throw("Selected Language is not available '" +i18n+ "'");
+            throw(`Selected Language is not available '${i18n}'`);
         }
+    }
+
+    getAllShorts() {
+        return Object.keys(this.i18nCodes);
+    }
+
+    getAllLongs() {
+        return Object.values(this.i18nCodes);
+    }
+
+    _findShortByValue(long) {
+        for (const prop in this.i18nCodes ) {
+            if( this.i18nCodes[prop] === long ) {
+                return prop;
+            }
+        }
+
+        return null;
     }
 }
 
