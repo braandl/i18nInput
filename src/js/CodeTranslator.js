@@ -87,7 +87,7 @@ class CodeTranslator
         "gm":"en_GM",
         "ge":"ge_GE",
         "de":"de_DE",
-        "de_SP":"de_SP",
+        "sp":"de_SP",
         "gh":"en_GH",
         "gi":"en_GI",
         "gr":"el_GR",
