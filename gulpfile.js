@@ -36,7 +36,7 @@ var config = {
 };
 
 gulp.task('css', function () {
-    return gulp.src('css/**/*.css')
+    return gulp.src('src/css/**/*.css')
         .pipe(concatCss("style.css"))
         .pipe(gulp.dest(config.css.outputDir));
 });
@@ -106,7 +106,7 @@ gulp.task('cleanPkg', function() {
         .pipe(clean());
 });
 
-gulp.task('default', gulp.series('clean', gulp.parallel('mergejs', 'css')));
+gulp.task('default', gulp.series('clean', gulp.parallel('mergejs', 'css', 'copy')));
 
 
 gulp.task('pkg', gulp.series('cleanPkg', 'packjs', 'cssPkg', 'copyPkg'));
