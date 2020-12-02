@@ -18,7 +18,7 @@ var CodeTranslator = /*#__PURE__*/function () {
   function CodeTranslator() {
     _classCallCheck(this, CodeTranslator);
 
-    this.i18nCodes = {
+    i18nCodes = {
       "af": "fa_AF",
       "al": "al_AL",
       "dz": "ar_DZ",
@@ -102,7 +102,7 @@ var CodeTranslator = /*#__PURE__*/function () {
       "gm": "en_GM",
       "ge": "ge_GE",
       "de": "de_DE",
-      "de_SP": "de_SP",
+      "sp": "de_SP",
       "gh": "en_GH",
       "gi": "en_GI",
       "gr": "el_GR",
@@ -270,80 +270,46 @@ var CodeTranslator = /*#__PURE__*/function () {
       "zw": "em_ZW",
       "ax": "sv_AX"
     };
-
-    this.i18nCodes.findKeyByValue = function (value) {
-      for (var prop in this) {
-        if (this.hasOwnProperty(prop)) {
-          if (this[prop] === value) {
-            return prop;
-          }
-        }
-      }
-
-      return null;
-    };
-
-    this.i18nCodes.getAllProps = function () {
-      var res = [];
-
-      for (var prop in this) {
-        if (this.hasOwnProperty(prop)) {
-          res.push(this[prop]);
-        }
-      }
-
-      return res;
-    };
   }
 
   _createClass(CodeTranslator, [{
     key: "translateShortToIso",
     value: function translateShortToIso(_short) {
-      var res = this.i18nCodes[_short];
-
-      if (res !== null && res !== undefined) {
-        return res;
+      if (_short in this.i18nCodes && this.i18nCodes[_short]) {
+        return this.i18nCodes[_short];
       } else {
-        throw "Selected Element Seems not to be valid";
+        throw 'Selected Element Seems not to be valid';
       }
     }
   }, {
     key: "translateIsoAssocArrayToShort",
-    value: function translateIsoAssocArrayToShort(i18nArray) {
-      if (!Array.isArray(i18nArray)) {
-        throw "Input Parameter must be of Type Array";
+    value: function translateIsoAssocArrayToShort(inputValues) {
+      var resultArray = [];
+
+      for (var key in inputValues) {
+        resultArray[this.translateShortToIso(key)] = inputValues[key];
       }
 
-      var resultArray = [];
-      i18nArray.each(this, function (key, value) {
-        resultArray[this.translateShortToIso(key)] = value;
-      });
       return resultArray;
     }
   }, {
     key: "translateIsoAssocArrayToShortObject",
-    value: function translateIsoAssocArrayToShortObject(i18nArray) {
-      if (!Array.isArray(i18nArray)) {
-        throw "Input Parameter must be of Type Array";
+    value: function translateIsoAssocArrayToShortObject(inputValues) {
+      var resultArray = {};
+
+      for (var key in inputValues) {
+        resultArray[this.translateShortToIso(key)] = inputValues[key];
       }
 
-      var resultArray = {};
-      i18nArray.each(this, function (key, value) {
-        resultArray[this.translateShortToIso(key)] = value;
-      });
       return resultArray;
     }
   }, {
     key: "translateIsoArrayToShort",
-    value: function translateIsoArrayToShort(i18nArray) {
-      if (!Array.isArray(i18nArray)) {
-        throw "Input Parameter must be of Type Array";
-      }
-
+    value: function translateIsoArrayToShort(inputValues) {
       var resultArray = [];
 
-      for (var i = 0; i < i18nArray.length; i++) {
-        resultArray.push(this.translateShortToIso(i18nArray[i]));
+      for (var key in inputValues) {
+        resultArray.push(this.translateShortToIso(inputValues[key]));
       }
 
       return resultArray;
@@ -351,13 +317,34 @@ var CodeTranslator = /*#__PURE__*/function () {
   }, {
     key: "translateIsoToShort",
     value: function translateIsoToShort(i18n) {
-      var res = this.i18nCodes.findKeyByValue(i18n);
+      var res = this._findShortByValue(i18n);
 
       if (res !== null && res !== undefined) {
         return res;
       } else {
-        throw "Selected Language is not available '" + i18n + "'";
+        throw "Selected Language is not available '".concat(i18n, "'");
       }
+    }
+  }, {
+    key: "getAllShorts",
+    value: function getAllShorts() {
+      return Object.keys(this.i18nCodes);
+    }
+  }, {
+    key: "getAllLongs",
+    value: function getAllLongs() {
+      return Object.values(this.i18nCodes);
+    }
+  }, {
+    key: "_findShortByValue",
+    value: function _findShortByValue(_long) {
+      for (var prop in this.i18nCodes) {
+        if (this.i18nCodes[prop] === _long) {
+          return prop;
+        }
+      }
+
+      return null;
     }
   }]);
 

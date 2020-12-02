@@ -178,7 +178,7 @@ var InputTool = /*#__PURE__*/function () {
       };
 
       var availablei18n = function availablei18n() {
-        return _this3.main.codeTranslator.i18nCodes.getAllProps();
+        return _this3.main.codeTranslator.getAllLongs();
       };
 
       var registerFormIncompleteHandler = function registerFormIncompleteHandler(handler) {
