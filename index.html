@@ -8,11 +8,11 @@
 </head>
 <body>
     <div style="margin:15px; text-decoration: underline;"><h1>i18nInputViewDemo</h1></div>
-    <div placeholder="['Deutsch', 'Österreichisch', 'English-GB', 'English-US', 'NL', 'IT', 'ES']" class="demo" input-class="form-control" expander-class="roundcorners" id="my_id1" width="350" languages="['de_DE','de_AT','en_EN','en_US','nl_NL','it_IT','es_ES']" ></div>
+    <div placeholder="['Deutsch', 'Österreichisch', 'English-GB', 'English-US', 'NL', 'IT', 'ES', 'Einfache Sprache']" class="demo" input-class="form-control" expander-class="roundcorners" id="my_id1" width="350" languages="['de_DE','de_AT','en_EN','en_US','nl_NL','it_IT','es_ES','de_SP']" ></div>
 
     <div style="border: 1px solid #ccc; padding-top: 20px; padding-bottom: 20px; margin: 45px 15px 15px 15px; width: 350px;">
         <form method="POST" action="demo.html">
-            <div style="margin-left: 16px; margin-top: -10px" id="my_id2" width="250" submitOnMissing="false" languages="['de_DE','de_AT','en_EN']"></div>
+            <div style="margin-left: 16px; margin-top: -10px" id="my_id2" width="250" submitOnMissing="false" languages="['de_DE','de_AT','en_EN', 'de_SP']"></div>
             <input style="margin-left: 16px; margin-top:40px;" type="submit" name="submit" value="Absenden"/>
         </form>
     </div>
@@ -25,7 +25,7 @@
     <script>
         $(document).ready(function () {
             //import i18nInputView from 'dist/i18nInput';
-            //var i18nInput = new i18nInputView(['de_DE, en_EN, fr_FR']);
+            //var i18nInput = new i18nInputView(['de_DE, en_EN, fr_FR, de SP']);
 
             i18n("my_id1");
             i18n("my_id2");

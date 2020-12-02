@@ -1552,3 +1552,9 @@
 .flag-icon-un.flag-icon-squared {
     background-image: url('flags/1x1/un.svg');
 }
+.flag-icon-de-sp {
+    background-image: url('flags/4x3/de_SP.svg');
+}
+.flag-icon--de-sp.flag-icon-squared {
+    background-image: url('flags/1x1/de_SP.svg');
+}

@@ -103,7 +103,7 @@ var CodeTranslator = /*#__PURE__*/function () {
       "gm": "en_GM",
       "ge": "ge_GE",
       "de": "de_DE",
-      "sp": "de_SP",
+      "de-sp": "de_SP",
       "gh": "en_GH",
       "gi": "en_GI",
       "gr": "el_GR",
