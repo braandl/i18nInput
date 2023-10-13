@@ -18,9 +18,9 @@ class InputTool
         let placeholder = el.attr("placeholder") !== undefined ? "placeholder=''" : "";
         let rows = parseInt(el.attr('rows'));
         if (rows === 1 || !rows) {
-            el.append("<input "+placeholder+" class='"+this.inputStyleClasses+"' type='text' />");
+            el.append("<input "+placeholder+" class='"+this.inputStyleClasses+"' type='text' style='padding-right: 36px;'/>");
         } else {
-            el.append("<textarea "+placeholder+" class='"+this.inputStyleClasses+"' style='line-height: 12px' type='text' rows='"+rows+"'></textarea>");
+            el.append("<textarea "+placeholder+" class='"+this.inputStyleClasses+"' style='padding-right: 36px; line-height: 12px' type='text' rows='"+rows+"'></textarea>");
         }
 
         this.input = $(el.children()[el.children().length - 1]);

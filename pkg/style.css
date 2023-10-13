@@ -2,6 +2,10 @@
   margin: 15px;
 }
 
+p {
+  margin-left: 18px;
+}
+
 .default-picker {
   right: 7px;
   cursor: pointer;
