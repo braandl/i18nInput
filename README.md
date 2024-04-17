@@ -47,33 +47,33 @@ The create the control, use the i18nInputView function on the ID of the div.
 
 ### Allowed HTML5 Attributes
 ```html
-<!-- The number of rows (if more than one, the input will be a textarea instead of an input fiel -->   
+<!-- The number of rows (if more than one, the input will be a textarea instead of an input fiel -->
  rows="[0-9]*"
 
 <!-- The width of the element -->
  width="270px"
- 
+
 <!-- The placeholder of the element that is shown when no input was entered. -->
  placeholder="My Placeholder"
 
 <!-- The placeholder can also be of type array and have a single on for each language. -->
  placeholder="['Mein Platzhalter', 'My Placeholder']"
- 
+
 <!-- Array of languages that are offered, the first one will be selected on start -->
  languages="['de_DE', 'en_EN']"
- 
-<!-- Classname or classnames of the expander area underneath the input field --> 
+
+<!-- Classname or classnames of the expander area underneath the input field -->
  expander-class="classname"
- 
+
 <!-- Classname or classnames to style the input field itself -->
  input-class="classname"
 
 <!-- Classname or classnames to style the picker -->
  picker-class="classname"
-  
+
 <!-- Animate FadeIn and Out, default is True -->
  animate="false"
- 
+
 <!-- Prevent submit if not all fields are filled, default is true -->
  submitOnMissing="false"
 ```
@@ -84,16 +84,16 @@ The create the control, use the i18nInputView function on the ID of the div.
  // Prints all filled in results. Missing fields are not returned.
  $('#my_i18n').i18n();
  <- Array
-    /*[de_DE: "Deutsch", nl_NL: "Nederlands", 
-    en_EN: "English", en_US: "Different English", 
+    /*[de_DE: "Deutsch", nl_NL: "Nederlands",
+    en_EN: "English", en_US: "Different English",
     de_AT: "Anderes Deutsch"]*/
 
 
  // Prints all filled in results. Missing fields are not returned.
  $('#my_i18n').i18nObject();
  <- Object
-    /*{de_DE: "Deutsch", nl_NL: "Nederlands", 
-    en_EN: "English", en_US: "Different English", 
+    /*{de_DE: "Deutsch", nl_NL: "Nederlands",
+    en_EN: "English", en_US: "Different English",
     de_AT: "Anderes Deutsch"}*/
 
  // Prints all languages that were not filled in.
@@ -108,29 +108,29 @@ The create the control, use the i18nInputView function on the ID of the div.
  /* Fill the Input Fields with preset Values using scalar Values or Arrays.
    Throws an Exception if Language is not available in definition.
  */
- $('#my_i18n').seti18n("de_DE", "Deutsch");
+ $('#my_i18n').setValue("de_DE", "Deutsch");
  <- Boolean
 
- $('#my_i18n').seti18n(["de_DE", "en_US"], ["Deutsch", "English"]);
+ $('#my_i18n').setValue(["de_DE", "en_US"], ["Deutsch", "English"]);
  <- Boolean
- 
+
  // Returns an Array of all locales that can be used to set up the View.
  $('#my_i18n').allLocales();
- <- Array; 
- 
+ <- Array;
+
  /* Adds an optional handler that is called when the form submit failed, because of an incomplete data set. */
  $('#my_i18n').registerFormIncompleteHandler(function() { /*...*/ });
- <- Boolean; 
- 
+ <- Boolean;
+
  // Enabling / Disabling the input field.
  $('#my_i18n > input').prop('disabled', true);
- 
+
  // Instead of using jQuery selector, plain JavaScript is okay as well:
  document.getElementById('my_id1').i18n();
 ```
 ### Form Handling
 
-As shown in the example below, a i18nInputView can be wrapped in a 
+As shown in the example below, a i18nInputView can be wrapped in a
 ```html
 <form METHOD="post">
     <div id="my_i18n" languages="['de_DE','de_AT','en_EN']"></div>
@@ -151,8 +151,8 @@ Not filled languages will be ignored in the form data.
 
 ## Credits
 
-* Flag Icon CSS was used to view all the 
+* Flag Icon CSS was used to view all the
 awesome SVG Flags. <br>
  (https://github.com/lipis/flag-icon-css)
- 
+
 * Written by Stephan Brandt <stephan.brandt@contagt.com>
