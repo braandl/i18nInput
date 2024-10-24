@@ -77,9 +77,9 @@ class TextEditorTool {
                 event.target.classList.add("selected");
                 event.target.setAttribute("aria-selected", "true");
 
-                const selectedSeccion = parent.querySelector(`${SECTION_SELECTOR}[data-tab="${event.target.dataset.tab}"]`);
-                selectedSeccion.classList.remove("d-none");
-                selectedSeccion.setAttribute("aria-selected", "true");
+                const selectedSection = parent.querySelector(`${SECTION_SELECTOR}[data-tab="${event.target.dataset.tab}"]`);
+                selectedSection.classList.remove("d-none");
+                selectedSection.setAttribute("aria-selected", "true");
 
                 if (event.target.dataset.tab === "preview") {
                     const markdown = parent.querySelector(TEXTAREA_SELECTOR).value;

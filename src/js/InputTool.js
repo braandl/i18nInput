@@ -21,7 +21,7 @@ class InputTool {
         if (rows === 1 || !rows) {
             el.append("<input " + placeholder + " class='" + this.inputStyleClasses + "' type='text' style='padding-right: 36px;'/>");
         } else {
-            const texteditor = TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
+            const texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
             el.append(texteditor.render());
         }
 
