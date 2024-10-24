@@ -1,16 +1,12 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 /**
  * Created by sbrandt on 05.07.17.
  */
@@ -35,55 +31,45 @@ var FlagsTool = /*#__PURE__*/function () {
     this.container = el;
     this.main = loader;
     var lng = null;
-
     if (el.attr('languages') !== undefined && loader.langKeys === undefined) {
       var string = String(el.attr('languages').replace(/'/g, "\""));
       lng = $.parseJSON(string);
     } else {
       lng = loader.langKeys;
     }
-
     for (var i = 0; i < lng.length; i++) {
       var currentLng = loader.codeTranslator.translateIsoToShort(lng[i]);
-
       if (this.languages.indexOf(currentLng) === -1) {
         this.languages.push(currentLng);
       } else {
         console.warn("Languages can not be added twice. Second '" + lng[i] + "' was ignored.");
       }
     }
-
     if (el.attr('animate') !== undefined && (el.attr('animate') === "false" || Boolean(el.attr('animate')) === false)) {
       this.FADEIN_SPEED = 0;
       this.FADEIN_DELAY = 0;
     }
-
     this.loadStyles();
     this.parsePlaceholder();
     this.initFlagController();
   }
-
-  (0, _createClass2["default"])(FlagsTool, [{
+  return (0, _createClass2["default"])(FlagsTool, [{
     key: "parsePlaceholder",
     value: function parsePlaceholder() {
       if (this.container.attr('placeholder') === undefined) return;
       var string = String(this.container.attr('placeholder').replace(/'/g, "\""));
       var placeholder = "";
-
       try {
         placeholder = $.parseJSON(string);
       } catch (e) {
         placeholder = string;
       }
-
       if (Array.isArray(placeholder)) {
         this.placeHolderType = "array";
         this.placeholder = [];
-
         if (placeholder.length < this.languages.length) {
           throw "If multiple Placeholders are provided, please provide a placeholder for every language";
         }
-
         for (var i = 0; i < placeholder.length; i++) {
           this.placeholder[this.languages[i]] = placeholder[i];
         }
@@ -98,7 +84,6 @@ var FlagsTool = /*#__PURE__*/function () {
       if (this.container.attr("expander-class") !== undefined) {
         this.inputStyleClasses = this.container.attr("expander-class");
       }
-
       if (this.container.attr("picker-class") !== undefined) {
         this.pickerClass = this.container.attr("picker-class");
       }
@@ -111,9 +96,8 @@ var FlagsTool = /*#__PURE__*/function () {
       } else {
         this.container.append("<div class='default-picker'></div>");
       }
-
-      this.flagger = $(this.container.children()[this.container.children().length - 1]); //this.flagger.css({"left" : this.main.inputTool.input.outerWidth() - 24, 'margin-top': - (this.main.inputTool.input.outerHeight() + 24) / 2});
-
+      this.flagger = $(this.container.children()[this.container.children().length - 1]);
+      //this.flagger.css({"left" : this.main.inputTool.input.outerWidth() - 24, 'margin-top': - (this.main.inputTool.input.outerHeight() + 24) / 2});
       this.flagger.html('<span title="Language: ' + this.main.codeTranslator.translateShortToIso(this.languages[0]) + '" class="flag-icon flag-icon-' + this.languages[0] + '"></span>');
       this.loadFlags();
       var self = this;
@@ -121,7 +105,6 @@ var FlagsTool = /*#__PURE__*/function () {
         if (self.languages.length === 1) return;
         clearTimeout(self.flaggerLeaveAnimationTimeout);
         clearTimeout(self.flaggerCancelAnimationTimeout);
-
         if (!self.isAnimating) {
           $(this).css({
             "cursor": "pointer"
@@ -183,40 +166,35 @@ var FlagsTool = /*#__PURE__*/function () {
     key: "loadFlags",
     value: function loadFlags() {
       var _this = this;
-
       var self = this;
-
       if (this.inputStyleClasses !== "") {
         this.container.append("<div class='" + this.inputStyleClasses + "'></div>");
       } else {
         this.container.append("<div></div>");
       }
-
       if (this.flaggerChooser != null) {
         this.flaggerChooser.remove();
       }
-
       this.flaggerChooser = $(this.container.children()[this.container.children().length - 1]);
       this.flaggerChooser.css({
         "position": "absolute",
         "margin-top": "-2px",
         "display": "none",
-        "padding": "2px",
+        "padding": "2px 5px",
+        "border-radius": "0 0 4px 4px",
         "background-color": "#FFFFFF",
         width: "100%",
         "border": "1px solid " + this.main.inputTool.input.css('border-color'),
         "z-index": 2
       });
       var itemsPerRow = Math.floor((this.flaggerChooser.innerWidth() - this.flaggerChooser.css("padding") * 2) / (this.flagger.outerWidth() + 2));
-
       var _loop = function _loop(i) {
         if (i === _this.currentFlag) {
-          return "continue";
+          return 1; // continue
         }
+        _this.flaggerChooser.append('<div style="float:right; display: none; padding:0 0 2px 2px;" ><span title="Language: ' + _this.main.codeTranslator.translateShortToIso(_this.languages[i]) + '" class="flag-icon flag-icon-' + _this.languages[i] + '"></span></div>');
 
-        _this.flaggerChooser.append('<div style="float:right; display: none; padding:0 0 2px 2px;" ><span title="Language: ' + _this.main.codeTranslator.translateShortToIso(_this.languages[i]) + '" class="flag-icon flag-icon-' + _this.languages[i] + '"></span></div>'); // Select the Current Item
-
-
+        // Select the Current Item
         var current = $(_this.flaggerChooser.children()[_this.flaggerChooser.children().length - 1]);
         current.hover(function () {
           $(this).css({
@@ -231,18 +209,13 @@ var FlagsTool = /*#__PURE__*/function () {
             self.loadFlags();
           });
         });
-
         if (i % itemsPerRow === 0) {
           _this.flaggerChooser.append("<div style='clear: both;'></div>");
         }
       };
-
       for (var i = 0; i < this.languages.length; i++) {
-        var _ret = _loop(i);
-
-        if (_ret === "continue") continue;
+        if (_loop(i)) continue;
       }
-
       this.flaggerChooser.append("<div style='clear: both;'></div>");
       this.flaggerChooser.on('mouseleave', function () {
         self.flaggerLeaveAnimationTimeout = setTimeout(function () {
@@ -257,8 +230,5 @@ var FlagsTool = /*#__PURE__*/function () {
       });
     }
   }]);
-  return FlagsTool;
 }();
-
-var _default = FlagsTool;
-exports["default"] = _default;
+var _default = exports["default"] = FlagsTool;
