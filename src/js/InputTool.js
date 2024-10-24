@@ -22,6 +22,7 @@ class InputTool {
             el.append("<input " + placeholder + " class='" + this.inputStyleClasses + "' type='text' style='padding-right: 36px;'/>");
             this.input = $(el.children()[el.children().length - 1]);
         } else {
+            el.addClass("text-editor-wrapper")
             const texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
             el.append(texteditor.render());
             this.input = $(texteditor.getTextarea());

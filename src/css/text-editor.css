@@ -32,6 +32,7 @@ div[role="i18ninput-textarea-editor"] header[role="header"] nav[role="tablist"] 
 div[role="i18ninput-textarea-editor"] header[role="header"] div[role="toolbar"] {
     display: flex;
     padding: 5px;
+    margin-right: 33px;
 }
 
 div[role="i18ninput-textarea-editor"] header[role="header"] div[role="toolbar"] button {
@@ -79,4 +80,12 @@ div[role="i18ninput-textarea-editor"] section[role="content"] div.d-none {
     -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
     -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
     transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.text-editor-wrapper .default-picker {
+    top: 9px;
+}
+
+.text-editor-wrapper div:last-child {
+    top: 38px;
 }

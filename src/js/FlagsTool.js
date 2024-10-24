@@ -168,7 +168,7 @@ class FlagsTool
             this.flaggerChooser.remove();
         }
         this.flaggerChooser = $(this.container.children()[this.container.children().length - 1]);
-        this.flaggerChooser.css({"position" : "absolute","margin-top": "-2px", "display": "none", "padding": "2px", "background-color" : "#FFFFFF",
+        this.flaggerChooser.css({"position" : "absolute","margin-top": "-2px", "display": "none", "padding": "2px 5px", "border-radius" : "0 0 4px 4px", "background-color" : "#FFFFFF",
             width: "100%",
             "border" : "1px solid "+ this.main.inputTool.input.css('border-color'), "z-index": 2});
         let itemsPerRow = Math.floor((this.flaggerChooser.innerWidth() - this.flaggerChooser.css("padding") * 2) / (this.flagger.outerWidth() + 2));
