@@ -20,12 +20,12 @@ class InputTool {
         let rows = parseInt(el.attr('rows'));
         if (rows === 1 || !rows) {
             el.append("<input " + placeholder + " class='" + this.inputStyleClasses + "' type='text' style='padding-right: 36px;'/>");
+            this.input = $(el.children()[el.children().length - 1]);
         } else {
             const texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
             el.append(texteditor.render());
+            this.input = $(texteditor.getTextarea());
         }
-
-        this.input = $(el.children()[el.children().length - 1]);
 
         this.main = loader;
         this.input.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "height": el.attr('height') < 12 ? 12 : el.attr('height') });

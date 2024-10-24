@@ -1,7 +1,3 @@
-div[role="i18ninput-textarea-editor"] {
-    margin-bottom: 20px;
-}
-
 div[role="i18ninput-textarea-editor"] header[role="header"] {
     display: flex;
     justify-content: space-between;

@@ -174,6 +174,15 @@ class TextEditorTool {
     render() {
         return this._container;
     }
+
+    /**
+     * @public
+     * @description Returns the textarea element of the text editor
+     * @returns {HTMLTextAreaElement} The textarea element of the text editor
+     */
+    getTextarea() {
+        return this._container.querySelector("textarea[role='textarea']");
+    }
 }
 
 export default TextEditorTool;
