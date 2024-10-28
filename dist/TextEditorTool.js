@@ -7,6 +7,33 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+/**
+ * @class TextEditorTool
+ * @description A text editor tool for the i18ninput library, based on markdown syntax with a preview mode that supports headings, bold, and italic text.
+ * This tool allows for easy text input and formatting within a textarea element.
+ * 
+ * @param {Object} options - Configuration options for the text editor tool.
+ * @param {string} [options.placeholder=""] - The placeholder text for the textarea. Default is an empty string.
+ * @param {string} [options.inputStyleClass="input-class"] - The class name for the text editor tool. Default is "input-class".
+ * @param {number} [options.rows=3] - The number of rows for the textarea. Default is 3.
+ * 
+ * @example
+ * // Create a new TextEditorTool instance
+ * const editor = new TextEditorTool({
+ *   placeholder: "Enter text here...",
+ *   inputStyleClass: "custom-input-class",
+ *   rows: 5
+ * });
+ * 
+ * // Append the editor to a container
+ * document.getElementById('editor-container').appendChild(editor.render());
+ * 
+ * @note The `options.inputStyleClass` parameter may affect the styling of the text editor. 
+ * It is recommended to override the styles in your CSS file rather than adding predefined styles to the class.
+ * 
+ * @author Andrei Chiriac
+ * @version 1.0
+ */
 var TextEditorTool = /*#__PURE__*/function () {
   function TextEditorTool(_ref) {
     var _ref$placeholder = _ref.placeholder,
@@ -76,13 +103,7 @@ var TextEditorTool = /*#__PURE__*/function () {
           selectedSection.classList.remove("d-none");
           selectedSection.setAttribute("aria-selected", "true");
           if (event.target.dataset.tab === "preview") {
-            var markdown = parent.querySelector(TEXTAREA_SELECTOR).value;
-            var preview = parent.querySelector("".concat(SECTION_SELECTOR, "[data-tab=\"preview\"]"));
-            if (markdown) {
-              preview.innerHTML = _this._parseMarkdownToHTML(markdown);
-            } else {
-              preview.innerHTML = "Kein Text zum Vorschauen";
-            }
+            _this.updatePreview();
           }
         });
       });
@@ -109,7 +130,7 @@ var TextEditorTool = /*#__PURE__*/function () {
         var newText = "**".concat(selectedText, "**");
         textarea.setRangeText(newText, start, end, "end");
         textarea.focus();
-        textarea.setSelectionRange(start + 2, end + 2 + selectedText.length);
+        textarea.setSelectionRange(start + 2, end + 2);
       });
 
       /* Italic */
@@ -122,7 +143,7 @@ var TextEditorTool = /*#__PURE__*/function () {
         var newText = "*".concat(selectedText, "*");
         textarea.setRangeText(newText, start, end, "end");
         textarea.focus();
-        textarea.setSelectionRange(start + 1, end + 1 + selectedText.length);
+        textarea.setSelectionRange(start + 1, end + 1);
       });
     }
 
@@ -177,6 +198,19 @@ var TextEditorTool = /*#__PURE__*/function () {
     key: "getTextarea",
     value: function getTextarea() {
       return this._container.querySelector("textarea[role='textarea']");
+    }
+
+    /**
+     * @public
+     * @description Updates the preview section of the text editor with the markdown content
+     * @returns {void}
+     */
+  }, {
+    key: "updatePreview",
+    value: function updatePreview() {
+      var markdown = this._container.querySelector("textarea[role='textarea']").value;
+      var preview = this._container.querySelector("div[data-tab='preview']");
+      preview.innerHTML = markdown ? this._parseMarkdownToHTML(markdown) : "Nothing to preview";
     }
   }]);
 }();

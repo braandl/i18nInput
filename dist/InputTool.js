@@ -21,6 +21,7 @@ var InputTool = /*#__PURE__*/function () {
     this.inputvalues = {};
     this.inputStyleClasses = "";
     this.container = el;
+    this.texteditor = null;
     if (el.attr("input-class") !== undefined) {
       this.inputStyleClasses = el.attr("input-class");
     }
@@ -31,13 +32,13 @@ var InputTool = /*#__PURE__*/function () {
       this.input = $(el.children()[el.children().length - 1]);
     } else {
       el.addClass("text-editor-wrapper");
-      var texteditor = new _TextEditorTool["default"]({
+      this.texteditor = new _TextEditorTool["default"]({
         placeholder: placeholder,
         inputStyleClass: this.inputStyleClasses,
         rows: rows
       });
-      el.append(texteditor.render());
-      this.input = $(texteditor.getTextarea());
+      el.append(this.texteditor.render());
+      this.input = $(this.texteditor.getTextarea());
     }
     this.main = loader;
     this.input.css({
@@ -75,6 +76,7 @@ var InputTool = /*#__PURE__*/function () {
   }, {
     key: "changedInputView",
     value: function changedInputView() {
+      var _this$texteditor;
       var currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
       if (this.main.flagsTool.placeHolderType === "string") {
         this.input.attr('placeholder', this.main.flagsTool.placeholder);
@@ -82,6 +84,7 @@ var InputTool = /*#__PURE__*/function () {
         this.input.attr('placeholder', this.main.flagsTool.placeholder[currentLanguage]);
       }
       this.input.val(this.inputvalues[currentLanguage]);
+      (_this$texteditor = this.texteditor) === null || _this$texteditor === void 0 || _this$texteditor.updatePreview();
     }
   }, {
     key: "addElementMethods",
