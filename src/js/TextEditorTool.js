@@ -113,7 +113,7 @@ class TextEditorTool {
 
             textarea.setRangeText(newText, start, end, "end");
             textarea.focus();
-            textarea.setSelectionRange(start + 2, end + 2 + selectedText.length);
+            textarea.setSelectionRange(start + 2, end + 2);
         });
 
         /* Italic */
@@ -128,7 +128,7 @@ class TextEditorTool {
 
             textarea.setRangeText(newText, start, end, "end");
             textarea.focus();
-            textarea.setSelectionRange(start + 1, end + 1 + selectedText.length);
+            textarea.setSelectionRange(start + 1, end + 1);
         });
     }
 
