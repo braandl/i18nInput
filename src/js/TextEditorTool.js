@@ -1,3 +1,30 @@
+/**
+ * @class TextEditorTool
+ * @description A text editor tool for the i18ninput library, based on markdown syntax with a preview mode that supports headings, bold, and italic text.
+ * This tool allows for easy text input and formatting within a textarea element.
+ * 
+ * @param {Object} options - Configuration options for the text editor tool.
+ * @param {string} [options.placeholder=""] - The placeholder text for the textarea. Default is an empty string.
+ * @param {string} [options.inputStyleClass="input-class"] - The class name for the text editor tool. Default is "input-class".
+ * @param {number} [options.rows=3] - The number of rows for the textarea. Default is 3.
+ * 
+ * @example
+ * // Create a new TextEditorTool instance
+ * const editor = new TextEditorTool({
+ *   placeholder: "Enter text here...",
+ *   inputStyleClass: "custom-input-class",
+ *   rows: 5
+ * });
+ * 
+ * // Append the editor to a container
+ * document.getElementById('editor-container').appendChild(editor.render());
+ * 
+ * @note The `options.inputStyleClass` parameter may affect the styling of the text editor. 
+ * It is recommended to override the styles in your CSS file rather than adding predefined styles to the class.
+ * 
+ * @author Andrei Chiriac
+ * @version 1.0
+ */
 class TextEditorTool {
     constructor({ placeholder = "", inputStyleClass = "input-class", rows = 3 }) {
         /** @private */
