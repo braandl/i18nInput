@@ -1,5 +1,5 @@
 class TextEditorTool {
-    constructor({ placeholder = "", inputStyleClass = "input-class", rows = 3 }) {        
+    constructor({ placeholder = "", inputStyleClass = "input-class", rows = 3 }) {
         /** @private */
         this._placeholder = placeholder;
         /** @private */
@@ -82,13 +82,7 @@ class TextEditorTool {
                 selectedSection.setAttribute("aria-selected", "true");
 
                 if (event.target.dataset.tab === "preview") {
-                    const markdown = parent.querySelector(TEXTAREA_SELECTOR).value;
-                    const preview = parent.querySelector(`${SECTION_SELECTOR}[data-tab="preview"]`);
-                    if (markdown) {
-                        preview.innerHTML = this._parseMarkdownToHTML(markdown);
-                    } else {
-                        preview.innerHTML = "Kein Text zum Vorschauen";
-                    }
+                    this.updatePreview();
                 }
             });
         });
@@ -110,7 +104,7 @@ class TextEditorTool {
         /* Bold */
         this._container.querySelector(BOLD_BUTTON_SELECTOR).addEventListener("click", event => {
             if (this._isPreviewMode()) return;
-            
+
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
@@ -182,6 +176,17 @@ class TextEditorTool {
      */
     getTextarea() {
         return this._container.querySelector("textarea[role='textarea']");
+    }
+
+    /**
+     * @public
+     * @description Updates the preview section of the text editor with the markdown content
+     * @returns {void}
+     */
+    updatePreview() {
+        const markdown = this._container.querySelector("textarea[role='textarea']").value;
+        const preview = this._container.querySelector("div[data-tab='preview']");
+        preview.innerHTML = markdown ? this._parseMarkdownToHTML(markdown) : "Nothing to preview";
     }
 }
 

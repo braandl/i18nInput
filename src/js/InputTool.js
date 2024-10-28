@@ -12,6 +12,7 @@ class InputTool {
         this.inputvalues = {};
         this.inputStyleClasses = "";
         this.container = el;
+        this.texteditor = null;
 
         if (el.attr("input-class") !== undefined) {
             this.inputStyleClasses = el.attr("input-class");
@@ -23,9 +24,9 @@ class InputTool {
             this.input = $(el.children()[el.children().length - 1]);
         } else {
             el.addClass("text-editor-wrapper")
-            const texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
-            el.append(texteditor.render());
-            this.input = $(texteditor.getTextarea());
+            this.texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
+            el.append(this.texteditor.render());
+            this.input = $(this.texteditor.getTextarea());
         }
 
         this.main = loader;
@@ -59,6 +60,7 @@ class InputTool {
             this.input.attr('placeholder', this.main.flagsTool.placeholder[currentLanguage]);
         }
         this.input.val(this.inputvalues[currentLanguage])
+        this.texteditor?.updatePreview();
     }
 
     addElementMethods() {
