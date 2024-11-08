@@ -30,8 +30,7 @@ class InputTool {
         }
 
         this.main = loader;
-        this.input.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "height": el.attr('height') < 12 ? 12 : el.attr('height') });
-        el.css({ "width": this.input.outerWidth() < 35 ? 'auto' : this.input.outerWidth(), "padding-bottom": "2px", "padding-top": "2px", "position": "relative" });
+        el.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "padding-bottom": "2px", "padding-top": "2px", "position": "relative" });
         this.addElementMethods();
         this.initKeyLogging();
         this.initInputChange();
