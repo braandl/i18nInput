@@ -1,3 +1,5 @@
+import MarkdownParser from "./MarkdownParser.js";
+
 /**
  * @class TextEditorTool
  * @description A text editor tool for the i18ninput library, based on markdown syntax with a preview mode that supports headings, bold, and italic text.
@@ -7,13 +9,15 @@
  * @param {string} [options.placeholder=""] - The placeholder text for the textarea. Default is an empty string.
  * @param {string} [options.inputStyleClass="input-class"] - The class name for the text editor tool. Default is "input-class".
  * @param {number} [options.rows=3] - The number of rows for the textarea. Default is 3.
+ * @param {Object} [options.rules={}] - The rules for the text editor tool. Default is an empty object. The rules can be `heading`, `bold`, and `italic`.
  * 
  * @example
  * // Create a new TextEditorTool instance
  * const editor = new TextEditorTool({
  *   placeholder: "Enter text here...",
  *   inputStyleClass: "custom-input-class",
- *   rows: 5
+ *   rows: 5,
+ *   rules: { heading: false, bold: true, italic: true }
  * });
  * 
  * // Append the editor to a container
@@ -26,7 +30,7 @@
  * @version 1.0
  */
 class TextEditorTool {
-    constructor({ placeholder = "", inputStyleClass = "input-class", rows = 3 }) {
+    constructor({ placeholder = "", inputStyleClass = "input-class", rows = 3, rules = {} }) {
         /** @private */
         this._placeholder = placeholder;
         /** @private */
@@ -38,7 +42,12 @@ class TextEditorTool {
         this._container.className = `${this._inputStyleClass}`;
         this._container.setAttribute("role", "i18ninput-textarea-editor");
 
+        this._headingAllowed = rules?.heading ?? true;
+        this._boldAllowed = rules?.bold ?? true;
+        this._italicAllowed = rules?.italic ?? true;
+
         this._createElement();
+        this._addButtons();
         this._setupEventListeners();
     }
 
@@ -54,11 +63,7 @@ class TextEditorTool {
                     <button type="button" class="${this._inputStyleClass}" role="tabnav-tab" data-tab="write" aria-selected="true">Write</button>
                     <button type="button" class="${this._inputStyleClass}" role="tabnav-tab" data-tab="preview" aria-selected="false">Preview</button>
                 </nav>
-                <div role="toolbar">
-                    <button title="Heading" class="${this._inputStyleClass}" role="heading-btn" type="button">H</button>
-                    <button title="Bold" class="${this._inputStyleClass}" role="bold-btn" type="button"><strong>B</strong></button>
-                    <button title="Italic" class="${this._inputStyleClass}" role="italic-btn" type="button"><em>I</em></button>
-                </div>
+                <div class="text-editor-toolbar" role="toolbar"></div>
             </header>
             <section role="content">
                 <div class="${this._inputStyleClass} form-control d-none" role="tabpanel" data-tab="preview">
@@ -69,6 +74,45 @@ class TextEditorTool {
                 </div>
             </section>
         `;
+    }
+
+    /**
+     * @private
+     * @description Adds the buttons to the text editor toolbar based on the configuration options
+     * @returns {void}
+     */
+    _addButtons() {
+        const tooblar = this._container.getElementsByClassName("text-editor-toolbar")[0];
+
+        if (this._headingAllowed) {
+            const headingButton = document.createElement("button");
+            headingButton.title = "Heading";
+            headingButton.className = this._inputStyleClass;
+            headingButton.setAttribute("role", "heading-btn");
+            headingButton.type = "button";
+            headingButton.textContent = "H";
+            tooblar.appendChild(headingButton);
+        }
+
+        if (this._boldAllowed) {
+            const boldButton = document.createElement("button");
+            boldButton.title = "Bold";
+            boldButton.className = this._inputStyleClass;
+            boldButton.setAttribute("role", "bold-btn");
+            boldButton.type = "button";
+            boldButton.innerHTML = "<strong>B</strong>";
+            tooblar.appendChild(boldButton);
+        }
+
+        if (this._italicAllowed) {
+            const italicButton = document.createElement("button");
+            italicButton.title = "Italic";
+            italicButton.className = this._inputStyleClass;
+            italicButton.setAttribute("role", "italic-btn");
+            italicButton.type = "button";
+            italicButton.innerHTML = "<em>I</em>";
+            tooblar.appendChild(italicButton);
+        }
     }
 
     /**
@@ -115,7 +159,7 @@ class TextEditorTool {
         });
 
         /* Heading */
-        this._container.querySelector(HEADING_BUTTON_SELECTOR).addEventListener("click", event => {
+        this._container.querySelector(HEADING_BUTTON_SELECTOR)?.addEventListener("click", event => {
             if (this._isPreviewMode()) return;
 
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
@@ -129,7 +173,7 @@ class TextEditorTool {
         });
 
         /* Bold */
-        this._container.querySelector(BOLD_BUTTON_SELECTOR).addEventListener("click", event => {
+        this._container.querySelector(BOLD_BUTTON_SELECTOR)?.addEventListener("click", event => {
             if (this._isPreviewMode()) return;
 
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
@@ -144,14 +188,14 @@ class TextEditorTool {
         });
 
         /* Italic */
-        this._container.querySelector(ITALIC_BUTTON_SELECTOR).addEventListener("click", event => {
+        this._container.querySelector(ITALIC_BUTTON_SELECTOR)?.addEventListener("click", event => {
             if (this._isPreviewMode()) return;
 
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
             const selectedText = textarea.value.substring(start, end);
-            const newText = `*${selectedText}*`;
+            const newText = `_${selectedText}_`;
 
             textarea.setRangeText(newText, start, end, "end");
             textarea.focus();
@@ -166,25 +210,6 @@ class TextEditorTool {
      */
     _isPreviewMode() {
         return this._container.querySelector("button[data-tab='preview']").classList.contains("selected");
-    }
-
-    /**
-     * @private
-     * @description Parses markdown to HTML
-     * @param {string} markdown - The markdown to parse
-     * @returns {string} The HTML representation of the markdown 
-     */
-    _parseMarkdownToHTML(markdown) {
-        // Convert headings
-        let html = markdown.replace(/^### (.*$)/gim, '<h3 style="font-weight: 600; margin: 0;">$1</h3>');
-        // Convert bold text
-        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        // Convert italic text
-        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        // Convert new lines
-        html = html.replace(/\n/g, '<br>');
-
-        return html;
     }
 
     /**
@@ -211,9 +236,10 @@ class TextEditorTool {
      * @returns {void}
      */
     updatePreview() {
+        const parser = new MarkdownParser({ heading: this._headingAllowed, bold: this._boldAllowed, italic: this._italicAllowed });
         const markdown = this._container.querySelector("textarea[role='textarea']").value;
         const preview = this._container.querySelector("div[data-tab='preview']");
-        preview.innerHTML = markdown ? this._parseMarkdownToHTML(markdown) : "Nothing to preview";
+        preview.innerHTML = markdown ? parser.parseMarkdown(markdown) : "Nothing to preview";
     }
 }
 

@@ -24,7 +24,11 @@ class InputTool {
             this.input = $(el.children()[el.children().length - 1]);
         } else {
             el.addClass("text-editor-wrapper")
-            this.texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows });
+            let rules = null;
+            if (el.attr('rules') !== undefined) {
+                rules = JSON.parse(el.attr('rules'));
+            }
+            this.texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows, rules: rules });
             el.append(this.texteditor.render());
             this.input = $(this.texteditor.getTextarea());
         }
