@@ -1,10 +1,14 @@
-const Markdown_Config = {
+export const MarkdownConfig = {
     RULES: {
-        HEADING: /^### (.*)(?:\n+?)/m,
-        BOLD: /\*\*([^\s*]+?)\*\*/gm,
-        ITALIC: /_([^\s*]+?)_/gm,
+        HEADING: /^### (.*)/m,
+        BOLD: /\*\*(.*?)\*\*/gm,
+        ITALIC: /_(.*?)_/gm,
         LINE_BREAK: /\n/g
 
+    },
+    STRICT: {
+        BOLD: /^\*\*(.*?)\*\*/gm,
+        ITALIC: /^_(.*?)_/gm,
     },
     HTML: {
         HEADING: '<h3 style="font-weight: 600; margin: 0;">$1</h3>',
@@ -67,7 +71,7 @@ export default class MarkdownParser {
      */
     _parseHeading(markdown) {
         if (!this._headingAllowed) return markdown;
-        return markdown.replace(Markdown_Config.RULES.HEADING, Markdown_Config.HTML.HEADING);
+        return markdown.replace(MarkdownConfig.RULES.HEADING, MarkdownConfig.HTML.HEADING);
     }
 
     /**
@@ -77,7 +81,7 @@ export default class MarkdownParser {
      */
     _parseBold(markdown) {
         if (!this._boldAllowed) return markdown;
-        return markdown.replace(Markdown_Config.RULES.BOLD, Markdown_Config.HTML.BOLD);
+        return markdown.replace(MarkdownConfig.RULES.BOLD, MarkdownConfig.HTML.BOLD);
     }
     
     /**
@@ -87,7 +91,7 @@ export default class MarkdownParser {
      */
     _parseItalic(markdown) {
         if (!this._italicAllowed) return markdown;
-        return markdown.replace(Markdown_Config.RULES.ITALIC, Markdown_Config.HTML.ITALIC);
+        return markdown.replace(MarkdownConfig.RULES.ITALIC, MarkdownConfig.HTML.ITALIC);
     }
 
     /**
@@ -96,6 +100,6 @@ export default class MarkdownParser {
      * @param {string} markdown 
      */
     _parseLineBreaks(markdown) {
-        return markdown.replace(Markdown_Config.RULES.LINE_BREAK, Markdown_Config.HTML.LINE_BREAK);
+        return markdown.replace(MarkdownConfig.RULES.LINE_BREAK, MarkdownConfig.HTML.LINE_BREAK);
     }
 }

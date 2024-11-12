@@ -1,4 +1,4 @@
-import MarkdownParser from "./MarkdownParser.js";
+import MarkdownParser, { MarkdownConfig } from "./MarkdownParser.js";
 
 /**
  * @class TextEditorTool
@@ -165,10 +165,20 @@ class TextEditorTool {
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            const newText = `### ${selectedText}`;
 
-            textarea.setRangeText(newText, start, end, "end");
+            const selectedText = String(textarea.value.substring(start, end));
+
+            if (MarkdownConfig.RULES.HEADING.test(selectedText)) {
+                const cleanText = selectedText.substring(4);
+                textarea.setRangeText(cleanText, start, end, "end");
+            }
+            else if (start >= 4 && MarkdownConfig.RULES.HEADING.test(textarea.value.substring(start - 4, start))) {
+                textarea.setRangeText(selectedText, start - 4, end, "end");
+            }
+            else {
+                textarea.setRangeText(`### ${selectedText}`, start, end, "end");
+            }
+
             textarea.focus();
         });
 
@@ -179,12 +189,21 @@ class TextEditorTool {
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            const newText = `**${selectedText}**`;
+            const selectedText = String(textarea.value.substring(start, end));
 
-            textarea.setRangeText(newText, start, end, "end");
+            if (MarkdownConfig.STRICT.BOLD.test(selectedText)) {
+                const cleanText = selectedText.slice(2, -2);
+                textarea.setRangeText(cleanText, start, end, "end");
+                textarea.setSelectionRange(start, end - 4);
+            } else if (start >= 2 && MarkdownConfig.STRICT.BOLD.test(textarea.value.substring(start - 2, end + 2))) {
+                textarea.setRangeText(selectedText, start - 2, end + 2, "end");
+                textarea.setSelectionRange(start - 2, end - 2);
+            } else {
+                textarea.setRangeText(`**${selectedText}**`, start, end, "end");
+                textarea.setSelectionRange(start + 2, end + 2);
+            }
+
             textarea.focus();
-            textarea.setSelectionRange(start + 2, end + 2);
         });
 
         /* Italic */
@@ -194,12 +213,21 @@ class TextEditorTool {
             const textarea = this._container.querySelector(TEXTAREA_SELECTOR);
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            const newText = `_${selectedText}_`;
+            const selectedText = String(textarea.value.substring(start, end));
 
-            textarea.setRangeText(newText, start, end, "end");
+            if (MarkdownConfig.STRICT.ITALIC.test(selectedText)) {
+                const cleanText = selectedText.slice(1, -1);
+                textarea.setRangeText(cleanText, start, end, "end");
+                textarea.setSelectionRange(start, end - 2);
+            } else if (start >= 1 && MarkdownConfig.STRICT.ITALIC.test(textarea.value.substring(start - 1, end + 1))) {
+                textarea.setRangeText(selectedText, start - 1, end + 1, "end");
+                textarea.setSelectionRange(start - 1, end - 1);
+            } else {
+                textarea.setRangeText(`_${selectedText}_`, start, end, "end");
+                textarea.setSelectionRange(start + 1, end + 1);
+            }
+
             textarea.focus();
-            textarea.setSelectionRange(start + 1, end + 1);
         });
     }
 

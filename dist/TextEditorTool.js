@@ -1,13 +1,16 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-var _MarkdownParser = _interopRequireDefault(require("./MarkdownParser.js"));
+var _MarkdownParser = _interopRequireWildcard(require("./MarkdownParser.js"));
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 /**
  * @class TextEditorTool
  * @description A text editor tool for the i18ninput library, based on markdown syntax with a preview mode that supports headings, bold, and italic text.
@@ -165,9 +168,15 @@ var TextEditorTool = /*#__PURE__*/function () {
         var textarea = _this._container.querySelector(TEXTAREA_SELECTOR);
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
-        var selectedText = textarea.value.substring(start, end);
-        var newText = "### ".concat(selectedText);
-        textarea.setRangeText(newText, start, end, "end");
+        var selectedText = String(textarea.value.substring(start, end));
+        if (_MarkdownParser.MarkdownConfig.RULES.HEADING.test(selectedText)) {
+          var cleanText = selectedText.substring(4);
+          textarea.setRangeText(cleanText, start, end, "end");
+        } else if (start >= 4 && _MarkdownParser.MarkdownConfig.RULES.HEADING.test(textarea.value.substring(start - 4, start))) {
+          textarea.setRangeText(selectedText, start - 4, end, "end");
+        } else {
+          textarea.setRangeText("### ".concat(selectedText), start, end, "end");
+        }
         textarea.focus();
       });
 
@@ -177,11 +186,19 @@ var TextEditorTool = /*#__PURE__*/function () {
         var textarea = _this._container.querySelector(TEXTAREA_SELECTOR);
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
-        var selectedText = textarea.value.substring(start, end);
-        var newText = "**".concat(selectedText, "**");
-        textarea.setRangeText(newText, start, end, "end");
+        var selectedText = String(textarea.value.substring(start, end));
+        if (_MarkdownParser.MarkdownConfig.STRICT.BOLD.test(selectedText)) {
+          var cleanText = selectedText.slice(2, -2);
+          textarea.setRangeText(cleanText, start, end, "end");
+          textarea.setSelectionRange(start, end - 4);
+        } else if (start >= 2 && _MarkdownParser.MarkdownConfig.STRICT.BOLD.test(textarea.value.substring(start - 2, end + 2))) {
+          textarea.setRangeText(selectedText, start - 2, end + 2, "end");
+          textarea.setSelectionRange(start - 2, end - 2);
+        } else {
+          textarea.setRangeText("**".concat(selectedText, "**"), start, end, "end");
+          textarea.setSelectionRange(start + 2, end + 2);
+        }
         textarea.focus();
-        textarea.setSelectionRange(start + 2, end + 2);
       });
 
       /* Italic */
@@ -190,11 +207,19 @@ var TextEditorTool = /*#__PURE__*/function () {
         var textarea = _this._container.querySelector(TEXTAREA_SELECTOR);
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
-        var selectedText = textarea.value.substring(start, end);
-        var newText = "_".concat(selectedText, "_");
-        textarea.setRangeText(newText, start, end, "end");
+        var selectedText = String(textarea.value.substring(start, end));
+        if (_MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(selectedText)) {
+          var cleanText = selectedText.slice(1, -1);
+          textarea.setRangeText(cleanText, start, end, "end");
+          textarea.setSelectionRange(start, end - 2);
+        } else if (start >= 1 && _MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(textarea.value.substring(start - 1, end + 1))) {
+          textarea.setRangeText(selectedText, start - 1, end + 1, "end");
+          textarea.setSelectionRange(start - 1, end - 1);
+        } else {
+          textarea.setRangeText("_".concat(selectedText, "_"), start, end, "end");
+          textarea.setSelectionRange(start + 1, end + 1);
+        }
         textarea.focus();
-        textarea.setSelectionRange(start + 1, end + 1);
       });
     }
 

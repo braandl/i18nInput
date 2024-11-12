@@ -4,15 +4,19 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports["default"] = exports.MarkdownConfig = void 0;
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-var Markdown_Config = {
+var MarkdownConfig = exports.MarkdownConfig = {
   RULES: {
-    HEADING: /^### (.*)(?:\n+?)/m,
-    BOLD: /\*\*([^\s*]+?)\*\*/gm,
-    ITALIC: /_([^\s*]+?)_/gm,
+    HEADING: /^### (.*)/m,
+    BOLD: /\*\*(.*?)\*\*/gm,
+    ITALIC: /_(.*?)_/gm,
     LINE_BREAK: /\n/g
+  },
+  STRICT: {
+    BOLD: /^\*\*(.*?)\*\*/gm,
+    ITALIC: /^_(.*?)_/gm
   },
   HTML: {
     HEADING: '<h3 style="font-weight: 600; margin: 0;">$1</h3>',
@@ -79,7 +83,7 @@ var MarkdownParser = exports["default"] = /*#__PURE__*/function () {
     key: "_parseHeading",
     value: function _parseHeading(markdown) {
       if (!this._headingAllowed) return markdown;
-      return markdown.replace(Markdown_Config.RULES.HEADING, Markdown_Config.HTML.HEADING);
+      return markdown.replace(MarkdownConfig.RULES.HEADING, MarkdownConfig.HTML.HEADING);
     }
 
     /**
@@ -91,7 +95,7 @@ var MarkdownParser = exports["default"] = /*#__PURE__*/function () {
     key: "_parseBold",
     value: function _parseBold(markdown) {
       if (!this._boldAllowed) return markdown;
-      return markdown.replace(Markdown_Config.RULES.BOLD, Markdown_Config.HTML.BOLD);
+      return markdown.replace(MarkdownConfig.RULES.BOLD, MarkdownConfig.HTML.BOLD);
     }
 
     /**
@@ -103,7 +107,7 @@ var MarkdownParser = exports["default"] = /*#__PURE__*/function () {
     key: "_parseItalic",
     value: function _parseItalic(markdown) {
       if (!this._italicAllowed) return markdown;
-      return markdown.replace(Markdown_Config.RULES.ITALIC, Markdown_Config.HTML.ITALIC);
+      return markdown.replace(MarkdownConfig.RULES.ITALIC, MarkdownConfig.HTML.ITALIC);
     }
 
     /**
@@ -114,7 +118,7 @@ var MarkdownParser = exports["default"] = /*#__PURE__*/function () {
   }, {
     key: "_parseLineBreaks",
     value: function _parseLineBreaks(markdown) {
-      return markdown.replace(Markdown_Config.RULES.LINE_BREAK, Markdown_Config.HTML.LINE_BREAK);
+      return markdown.replace(MarkdownConfig.RULES.LINE_BREAK, MarkdownConfig.HTML.LINE_BREAK);
     }
   }]);
 }();
