@@ -198,14 +198,23 @@ var TextEditorTool = /*#__PURE__*/function () {
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
         var selectedText = String(textarea.value.substring(start, end));
+
+        // Do not allow bold text in headings
+        if (_this._isHeading(selectedText) || _this._isHeading(textarea.value.substring(start - 4, end))) {
+          textarea.focus();
+          return;
+        }
         if (_MarkdownParser.MarkdownConfig.STRICT.BOLD.test(selectedText)) {
+          // If the selected text is already bold, remove the bold syntax
           var cleanText = selectedText.slice(2, -2);
           textarea.setRangeText(cleanText, start, end, "end");
           textarea.setSelectionRange(start, end - 4);
         } else if (start >= 2 && _MarkdownParser.MarkdownConfig.STRICT.BOLD.test(textarea.value.substring(start - 2, end + 2))) {
+          // If the text around the selection is bold, remove the bold syntax
           textarea.setRangeText(selectedText, start - 2, end + 2, "end");
           textarea.setSelectionRange(start - 2, end - 2);
         } else {
+          // Otherwise, add bold syntax around the selected text
           textarea.setRangeText("**".concat(selectedText, "**"), start, end, "end");
           textarea.setSelectionRange(start + 2, end + 2);
         }
@@ -220,16 +229,35 @@ var TextEditorTool = /*#__PURE__*/function () {
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
         var selectedText = String(textarea.value.substring(start, end));
-        if (_MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(selectedText)) {
-          var cleanText = selectedText.slice(1, -1);
-          textarea.setRangeText(cleanText, start, end, "end");
-          textarea.setSelectionRange(start, end - 2);
-        } else if (start >= 1 && _MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(textarea.value.substring(start - 1, end + 1))) {
-          textarea.setRangeText(selectedText, start - 1, end + 1, "end");
-          textarea.setSelectionRange(start - 1, end - 1);
+        if (_this._isHeading(selectedText)) {
+          // Skip heading markers
+          var headingText = selectedText.substring(4);
+          var isItalic = _MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(headingText);
+          if (isItalic) {
+            // Remove italic from heading text
+            var cleanText = headingText.slice(1, -1);
+            textarea.setRangeText(selectedText.substring(0, 4) + cleanText, start, end, "end");
+            textarea.setSelectionRange(start, end - 2);
+          } else {
+            // Add italic to heading text
+            textarea.setRangeText(selectedText.substring(0, 4) + "_".concat(headingText, "_"), start, end, "end");
+            textarea.setSelectionRange(start, end + 2);
+          }
         } else {
-          textarea.setRangeText("_".concat(selectedText, "_"), start, end, "end");
-          textarea.setSelectionRange(start + 1, end + 1);
+          if (_MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(selectedText)) {
+            // Remove italic from normal text
+            var _cleanText = selectedText.slice(1, -1);
+            textarea.setRangeText(_cleanText, start, end, "end");
+            textarea.setSelectionRange(start, end - 2);
+          } else if (start >= 1 && _MarkdownParser.MarkdownConfig.STRICT.ITALIC.test(textarea.value.substring(start - 1, end + 1))) {
+            // Remove italic from surrounding text
+            textarea.setRangeText(selectedText, start - 1, end + 1, "end");
+            textarea.setSelectionRange(start - 1, end - 1);
+          } else {
+            // Add italic to normal text
+            textarea.setRangeText("_".concat(selectedText, "_"), start, end, "end");
+            textarea.setSelectionRange(start + 1, end + 1);
+          }
         }
         textarea.focus();
         _this._notifyChange();
@@ -245,6 +273,11 @@ var TextEditorTool = /*#__PURE__*/function () {
     key: "_isPreviewMode",
     value: function _isPreviewMode() {
       return this._container.querySelector("button[data-tab='preview']").classList.contains("selected");
+    }
+  }, {
+    key: "_isHeading",
+    value: function _isHeading(text) {
+      return _MarkdownParser.MarkdownConfig.RULES.HEADING.test(text);
     }
 
     /**

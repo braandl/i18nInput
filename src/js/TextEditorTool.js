@@ -44,7 +44,7 @@ class TextEditorTool {
         this._container = document.createElement("div");
         this._container.className = `${this._inputStyleClass}`;
         this._container.setAttribute("role", "i18ninput-textarea-editor");
-        
+
         /** @private */
         this._onChangeCallback = null;
 
@@ -202,14 +202,23 @@ class TextEditorTool {
             const end = textarea.selectionEnd;
             const selectedText = String(textarea.value.substring(start, end));
 
+            // Do not allow bold text in headings
+            if (this._isHeading(selectedText) || this._isHeading(textarea.value.substring(start - 4, end))) {
+                textarea.focus();
+                return;
+            }
+
             if (MarkdownConfig.STRICT.BOLD.test(selectedText)) {
+                // If the selected text is already bold, remove the bold syntax
                 const cleanText = selectedText.slice(2, -2);
                 textarea.setRangeText(cleanText, start, end, "end");
                 textarea.setSelectionRange(start, end - 4);
             } else if (start >= 2 && MarkdownConfig.STRICT.BOLD.test(textarea.value.substring(start - 2, end + 2))) {
+                // If the text around the selection is bold, remove the bold syntax
                 textarea.setRangeText(selectedText, start - 2, end + 2, "end");
                 textarea.setSelectionRange(start - 2, end - 2);
             } else {
+                // Otherwise, add bold syntax around the selected text
                 textarea.setRangeText(`**${selectedText}**`, start, end, "end");
                 textarea.setSelectionRange(start + 2, end + 2);
             }
@@ -227,16 +236,36 @@ class TextEditorTool {
             const end = textarea.selectionEnd;
             const selectedText = String(textarea.value.substring(start, end));
 
-            if (MarkdownConfig.STRICT.ITALIC.test(selectedText)) {
-                const cleanText = selectedText.slice(1, -1);
-                textarea.setRangeText(cleanText, start, end, "end");
-                textarea.setSelectionRange(start, end - 2);
-            } else if (start >= 1 && MarkdownConfig.STRICT.ITALIC.test(textarea.value.substring(start - 1, end + 1))) {
-                textarea.setRangeText(selectedText, start - 1, end + 1, "end");
-                textarea.setSelectionRange(start - 1, end - 1);
+            if (this._isHeading(selectedText)) {
+                // Skip heading markers
+                const headingText = selectedText.substring(4); 
+                const isItalic = MarkdownConfig.STRICT.ITALIC.test(headingText);
+
+                if (isItalic) {
+                    // Remove italic from heading text
+                    const cleanText = headingText.slice(1, -1);
+                    textarea.setRangeText(selectedText.substring(0, 4) + cleanText, start, end, "end");
+                    textarea.setSelectionRange(start, end - 2);
+                } else {
+                    // Add italic to heading text
+                    textarea.setRangeText(selectedText.substring(0, 4) + `_${headingText}_`, start, end, "end");
+                    textarea.setSelectionRange(start, end + 2);
+                }
             } else {
-                textarea.setRangeText(`_${selectedText}_`, start, end, "end");
-                textarea.setSelectionRange(start + 1, end + 1);
+                if (MarkdownConfig.STRICT.ITALIC.test(selectedText)) {
+                    // Remove italic from normal text
+                    const cleanText = selectedText.slice(1, -1);
+                    textarea.setRangeText(cleanText, start, end, "end");
+                    textarea.setSelectionRange(start, end - 2);
+                } else if (start >= 1 && MarkdownConfig.STRICT.ITALIC.test(textarea.value.substring(start - 1, end + 1))) {
+                    // Remove italic from surrounding text
+                    textarea.setRangeText(selectedText, start - 1, end + 1, "end");
+                    textarea.setSelectionRange(start - 1, end - 1);
+                } else {
+                    // Add italic to normal text
+                    textarea.setRangeText(`_${selectedText}_`, start, end, "end");
+                    textarea.setSelectionRange(start + 1, end + 1);
+                }
             }
 
             textarea.focus();
@@ -251,6 +280,11 @@ class TextEditorTool {
      */
     _isPreviewMode() {
         return this._container.querySelector("button[data-tab='preview']").classList.contains("selected");
+    }
+
+
+    _isHeading(text) {
+        return MarkdownConfig.RULES.HEADING.test(text);
     }
 
     /**
@@ -294,13 +328,13 @@ class TextEditorTool {
         preview.innerHTML = markdown ? parser.parseMarkdown(markdown) : "Nothing to preview";
     }
 
-     /**
-     * @public
-     * @description Sets a callback to be called when the content changes
-     * @param {Function} callback 
-     * @returns {void}
-     */
-     setOnChangeCallback(callback) {
+    /**
+    * @public
+    * @description Sets a callback to be called when the content changes
+    * @param {Function} callback 
+    * @returns {void}
+    */
+    setOnChangeCallback(callback) {
         this._onChangeCallback = callback;
     }
 }
