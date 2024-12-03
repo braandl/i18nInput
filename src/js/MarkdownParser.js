@@ -42,8 +42,11 @@ export default class MarkdownParser {
             italic = true
         } = options;
 
+        /** @private */
         this._headingAllowed = heading;
+        /** @private */
         this._boldAllowed = bold;
+        /** @private */
         this._italicAllowed = italic;
     }
 

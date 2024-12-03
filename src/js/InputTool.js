@@ -26,11 +26,17 @@ class InputTool {
             el.addClass("text-editor-wrapper")
             let rules = null;
             if (el.attr('rules') !== undefined) {
-                rules = JSON.parse(el.attr('rules'));
+                rules = JSON.parse(el.attr('rules').replace(/\[/g, '{').replace(/\]/g, '}').replace(/'/g, '"'));
             }
             this.texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows, rules: rules });
             el.append(this.texteditor.render());
             this.input = $(this.texteditor.getTextarea());
+
+            // Add locale change listener to text editor
+            this.texteditor.setOnChangeCallback(value => {
+                let currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
+                this.inputvalues[currentLanguage] = value;
+            })
         }
 
         this.main = loader;

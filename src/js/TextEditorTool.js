@@ -23,11 +23,14 @@ import MarkdownParser, { MarkdownConfig } from "./MarkdownParser.js";
  * // Append the editor to a container
  * document.getElementById('editor-container').appendChild(editor.render());
  * 
+ * // Create the text editor tool with the following HTML structure:
+ * <div class="example-test-editor" input-class="readonly-aware-light" languages="['de_DE', 'en_GB']" rows="3" rules="['heading': false]"></div>
+ * 
  * @note The `options.inputStyleClass` parameter may affect the styling of the text editor. 
  * It is recommended to override the styles in your CSS file rather than adding predefined styles to the class.
  * 
  * @author Andrei Chiriac
- * @version 1.0
+ * @version 1.1
  */
 class TextEditorTool {
     constructor({ placeholder = "", inputStyleClass = "input-class", rows = 3, rules = {} }) {
@@ -41,14 +44,21 @@ class TextEditorTool {
         this._container = document.createElement("div");
         this._container.className = `${this._inputStyleClass}`;
         this._container.setAttribute("role", "i18ninput-textarea-editor");
+        
+        /** @private */
+        this._onChangeCallback = null;
 
+        /** @private */
         this._headingAllowed = rules?.heading ?? true;
+        /** @private */
         this._boldAllowed = rules?.bold ?? true;
+        /** @private */
         this._italicAllowed = rules?.italic ?? true;
 
         this._createElement();
         this._addButtons();
         this._setupEventListeners();
+
     }
 
     /**
@@ -180,6 +190,7 @@ class TextEditorTool {
             }
 
             textarea.focus();
+            this._notifyChange();
         });
 
         /* Bold */
@@ -204,6 +215,7 @@ class TextEditorTool {
             }
 
             textarea.focus();
+            this._notifyChange();
         });
 
         /* Italic */
@@ -228,6 +240,7 @@ class TextEditorTool {
             }
 
             textarea.focus();
+            this._notifyChange();
         });
     }
 
@@ -238,6 +251,17 @@ class TextEditorTool {
      */
     _isPreviewMode() {
         return this._container.querySelector("button[data-tab='preview']").classList.contains("selected");
+    }
+
+    /**
+     * @private
+     * @description Notifies when content has changed
+     * @returns {void}
+     */
+    _notifyChange() {
+        if (this._onChangeCallback) {
+            this._onChangeCallback(this.getTextarea().value);
+        }
     }
 
     /**
@@ -268,6 +292,16 @@ class TextEditorTool {
         const markdown = this._container.querySelector("textarea[role='textarea']").value;
         const preview = this._container.querySelector("div[data-tab='preview']");
         preview.innerHTML = markdown ? parser.parseMarkdown(markdown) : "Nothing to preview";
+    }
+
+     /**
+     * @public
+     * @description Sets a callback to be called when the content changes
+     * @param {Function} callback 
+     * @returns {void}
+     */
+     setOnChangeCallback(callback) {
+        this._onChangeCallback = callback;
     }
 }
 

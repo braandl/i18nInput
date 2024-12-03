@@ -1,18 +1,13 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 /**
  * Created by sbrandt on 05.07.17.
  */
@@ -272,8 +267,7 @@ var CodeTranslator = /*#__PURE__*/function () {
       "ax": "sv_AX"
     });
   }
-
-  (0, _createClass2["default"])(CodeTranslator, [{
+  return (0, _createClass2["default"])(CodeTranslator, [{
     key: "translateShortToIso",
     value: function translateShortToIso(_short) {
       if (_short in this.i18nCodes && this.i18nCodes[_short]) {
@@ -286,40 +280,33 @@ var CodeTranslator = /*#__PURE__*/function () {
     key: "translateIsoAssocArrayToShort",
     value: function translateIsoAssocArrayToShort(inputValues) {
       var resultArray = [];
-
       for (var key in inputValues) {
         resultArray[this.translateShortToIso(key)] = inputValues[key];
       }
-
       return resultArray;
     }
   }, {
     key: "translateIsoAssocArrayToShortObject",
     value: function translateIsoAssocArrayToShortObject(inputValues) {
       var resultArray = {};
-
       for (var key in inputValues) {
         resultArray[this.translateShortToIso(key)] = inputValues[key];
       }
-
       return resultArray;
     }
   }, {
     key: "translateIsoArrayToShort",
     value: function translateIsoArrayToShort(inputValues) {
       var resultArray = [];
-
       for (var key in inputValues) {
         resultArray.push(this.translateShortToIso(inputValues[key]));
       }
-
       return resultArray;
     }
   }, {
     key: "translateIsoToShort",
     value: function translateIsoToShort(i18n) {
       var res = this._findShortByValue(i18n);
-
       if (res !== null && res !== undefined) {
         return res;
       } else {
@@ -344,12 +331,8 @@ var CodeTranslator = /*#__PURE__*/function () {
           return prop;
         }
       }
-
       return null;
     }
   }]);
-  return CodeTranslator;
 }();
-
-var _default = CodeTranslator;
-exports["default"] = _default;
+var _default = exports["default"] = CodeTranslator;
