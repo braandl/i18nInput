@@ -40,6 +40,8 @@ class InputTool {
         }
 
         this.main = loader;
+        if (this.texteditor == null)
+            this.input.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "height": el.attr('height') < 12 ? 12 : el.attr('height') });
         el.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "padding-bottom": "2px", "padding-top": "2px", "position": "relative" });
         this.addElementMethods();
         this.initKeyLogging();
