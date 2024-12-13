@@ -1,8 +1,9 @@
+import TextEditorTool from "./TextEditorTool";
+
 /**
  * Created by sbrandt on 05.07.17.
  */
-class InputTool
-{
+class InputTool {
 
     constructor(el, loader) {
         this.container = null;
@@ -11,23 +12,37 @@ class InputTool
         this.inputvalues = {};
         this.inputStyleClasses = "";
         this.container = el;
+        this.texteditor = null;
 
         if (el.attr("input-class") !== undefined) {
-            this.inputStyleClasses  = el.attr("input-class");
+            this.inputStyleClasses = el.attr("input-class");
         }
         let placeholder = el.attr("placeholder") !== undefined ? "placeholder=''" : "";
         let rows = parseInt(el.attr('rows'));
         if (rows === 1 || !rows) {
-            el.append("<input "+placeholder+" class='"+this.inputStyleClasses+"' type='text' style='padding-right: 36px;'/>");
+            el.append("<input " + placeholder + " class='" + this.inputStyleClasses + "' type='text' style='padding-right: 36px;'/>");
+            this.input = $(el.children()[el.children().length - 1]);
         } else {
-            el.append("<textarea "+placeholder+" class='"+this.inputStyleClasses+"' style='padding-right: 36px; line-height: 12px' type='text' rows='"+rows+"'></textarea>");
+            el.addClass("text-editor-wrapper")
+            let rules = null;
+            if (el.attr('rules') !== undefined) {
+                rules = JSON.parse(el.attr('rules').replace(/\[/g, '{').replace(/\]/g, '}').replace(/'/g, '"'));
+            }
+            this.texteditor = new TextEditorTool({ placeholder: placeholder, inputStyleClass: this.inputStyleClasses, rows: rows, rules: rules });
+            el.append(this.texteditor.render());
+            this.input = $(this.texteditor.getTextarea());
+
+            // Add locale change listener to text editor
+            this.texteditor.setOnChangeCallback(value => {
+                let currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
+                this.inputvalues[currentLanguage] = value;
+            })
         }
 
-        this.input = $(el.children()[el.children().length - 1]);
-
         this.main = loader;
-        this.input.css({"width" : el.attr('width') < 35 ? 35 : el.attr('width'), "height" : el.attr('height') < 12 ? 12 : el.attr('height')});
-        el.css({"width" : this.input.outerWidth() < 35 ? 'auto' : this.input.outerWidth(), "padding-bottom" : "2px", "padding-top" : "2px", "position": "relative"});
+        if (this.texteditor == null)
+            this.input.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "height": el.attr('height') < 12 ? 12 : el.attr('height') });
+        el.css({ "width": el.attr('width') < 35 ? 35 : el.attr('width'), "padding-bottom": "2px", "padding-top": "2px", "position": "relative" });
         this.addElementMethods();
         this.initKeyLogging();
         this.initInputChange();
@@ -42,7 +57,7 @@ class InputTool
     }
 
     initInputChange() {
-        this.input.on( 'change', () => {
+        this.input.on('change', () => {
             let currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
             this.inputvalues[currentLanguage] = $(this.input).val();
         });
@@ -50,12 +65,13 @@ class InputTool
 
     changedInputView() {
         let currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
-        if ( this.main.flagsTool.placeHolderType === "string") {
+        if (this.main.flagsTool.placeHolderType === "string") {
             this.input.attr('placeholder', this.main.flagsTool.placeholder);
-        } else if ( this.main.flagsTool.placeHolderType === "array") {
+        } else if (this.main.flagsTool.placeHolderType === "array") {
             this.input.attr('placeholder', this.main.flagsTool.placeholder[currentLanguage]);
         }
         this.input.val(this.inputvalues[currentLanguage])
+        this.texteditor?.updatePreview();
     }
 
     addElementMethods() {
@@ -79,7 +95,7 @@ class InputTool
             }
         };
 
-        const completed = function() {
+        const completed = function () {
             return missingi18n().length === 0;
         };
 
@@ -87,7 +103,10 @@ class InputTool
             let missing = [];
 
             for (let i = 0; i < this.main.flagsTool.languages.length; i++) {
-                if (!(this.main.flagsTool.languages[i] in this.inputvalues) || this.inputvalues[this.main.flagsTool.languages[i]] === undefined || this.inputvalues[this.main.flagsTool.languages[i]].length === 0) {
+                if (!(this.main.flagsTool.languages[i] in this.inputvalues)
+                    || this.inputvalues[this.main.flagsTool.languages[i]] === undefined
+                    || this.inputvalues[this.main.flagsTool.languages[i]].length === 0
+                ) {
                     missing.push(this.main.flagsTool.languages[i]);
                 }
             }
@@ -96,28 +115,28 @@ class InputTool
         };
 
         const setValueAuto = value => {
-          if (typeof value === 'object'){
-            Object.keys(value).forEach(function(key) {
-              setValue(key, value[key]);
-            });
-          } else {
-            this.input.val(value);
-          }
+            if (typeof value === 'object') {
+                Object.keys(value).forEach(function (key) {
+                    setValue(key, value[key]);
+                });
+            } else {
+                this.input.val(value);
+            }
         }
 
         const setValue = (lng, value) => {
             console.log(lng, value);
             if (lng instanceof Array) {
-                if (value instanceof  Array) {
+                if (value instanceof Array) {
                     if (lng.length !== value.length) {
-                        throw("Both input arrays must have the same size");
+                        throw ("Both input arrays must have the same size");
                     }
                     for (let i = 0; i < lng.length; i++) {
                         let short = this.main.codeTranslator.translateIsoToShort(lng[i]);
                         if (this.main.isi18nRegistered(short)) {
                             this.inputvalues[short] = value[i];
                         } else {
-                            throw("Language " + lng + " is not registered with the View");
+                            throw ("Language " + lng + " is not registered with the View");
                         }
                     }
                 } else {
@@ -128,7 +147,7 @@ class InputTool
                 if (this.main.isi18nRegistered(short)) {
                     this.inputvalues[short] = value;
                 } else {
-                    throw("Language " + lng + " is not registered with the View");
+                    throw ("Language " + lng + " is not registered with the View");
                 }
             }
             this.changedInputView();
@@ -174,12 +193,12 @@ class InputTool
         };
 
         this.container.init.prototype.setValue = function (lng, value) {
-          return document.getElementById($(this).attr("id").replace('#', '')).setValue(lng, value);
+            return document.getElementById($(this).attr("id").replace('#', '')).setValue(lng, value);
         };
 
         this.container.init.prototype.setValueAuto = function (value) {
-          console.log($(this));
-          return document.getElementById($(this).attr("id").replace('#', '')).setValueAuto(value);
+            console.log($(this));
+            return document.getElementById($(this).attr("id").replace('#', '')).setValueAuto(value);
         };
 
         /*this.container.init.prototype.val = function (value) {

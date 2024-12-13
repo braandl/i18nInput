@@ -1,0 +1,91 @@
+div[role="i18ninput-textarea-editor"] header[role="header"] {
+    display: flex;
+    justify-content: space-between;
+    background-color: #efefef;
+    border-radius: 4px 4px 0 0;
+}
+
+div[role="i18ninput-textarea-editor"] header[role="header"] nav[role="tablist"] button[role="tabnav-tab"] {
+    float: left;
+    text-align: center;
+    padding: 7px 10px;
+    height: 36px;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 1.428571429;
+    border: none;
+    border-bottom-color: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+}
+
+div[role="i18ninput-textarea-editor"] header[role="header"] nav[role="tablist"] button[role="tabnav-tab"].selected,
+div[role="i18ninput-textarea-editor"] header[role="header"] nav[role="tablist"] button[role="tabnav-tab"][aria-selected=true] {
+    color: #0b7293;
+    background: #fff;
+    font-weight: 600;
+    height: 37px;
+    border: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    border-bottom-color: transparent;
+}
+
+div[role="i18ninput-textarea-editor"] header[role="header"] div[role="toolbar"] {
+    display: flex;
+    padding: 5px;
+    margin-right: 33px;
+}
+
+div[role="i18ninput-textarea-editor"] header[role="header"] div[role="toolbar"] button {
+    width: 32px;
+    border: none;
+    background-color: #efefef;
+    border-radius: 4px;
+}
+
+div[role="i18ninput-textarea-editor"] header[role="header"] div[role="toolbar"] button:hover {
+    background-color: #e2e2e2;
+}
+
+div[role="i18ninput-textarea-editor"] section[role="content"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+}
+
+div[role="i18ninput-textarea-editor"] section[role="content"] div[data-tab="preview"] {
+    height: auto;
+    min-height: 48px;
+    max-height: 10em;
+    overflow-y: scroll;
+}
+
+div[role="i18ninput-textarea-editor"] section[role="content"] div.d-none {
+    display: none;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.text-editor-wrapper .default-picker {
+    top: 9px;
+}
+
+.text-editor-wrapper div:last-child {
+    top: 38px;
+}

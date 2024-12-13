@@ -13,11 +13,15 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
+var _TextEditorTool = _interopRequireDefault(require("./TextEditorTool"));
+
 /**
  * Created by sbrandt on 05.07.17.
  */
 var InputTool = /*#__PURE__*/function () {
   function InputTool(el, loader) {
+    var _this = this;
+
     (0, _classCallCheck2["default"])(this, InputTool);
     this.container = null;
     this.main = null;
@@ -25,6 +29,7 @@ var InputTool = /*#__PURE__*/function () {
     this.inputvalues = {};
     this.inputStyleClasses = "";
     this.container = el;
+    this.texteditor = null;
 
     if (el.attr("input-class") !== undefined) {
       this.inputStyleClasses = el.attr("input-class");
@@ -35,18 +40,37 @@ var InputTool = /*#__PURE__*/function () {
 
     if (rows === 1 || !rows) {
       el.append("<input " + placeholder + " class='" + this.inputStyleClasses + "' type='text' style='padding-right: 36px;'/>");
+      this.input = $(el.children()[el.children().length - 1]);
     } else {
-      el.append("<textarea " + placeholder + " class='" + this.inputStyleClasses + "' style='padding-right: 36px; line-height: 12px' type='text' rows='" + rows + "'></textarea>");
+      el.addClass("text-editor-wrapper");
+      var rules = null;
+
+      if (el.attr('rules') !== undefined) {
+        rules = JSON.parse(el.attr('rules').replace(/\[/g, '{').replace(/\]/g, '}').replace(/'/g, '"'));
+      }
+
+      this.texteditor = new _TextEditorTool["default"]({
+        placeholder: placeholder,
+        inputStyleClass: this.inputStyleClasses,
+        rows: rows,
+        rules: rules
+      });
+      el.append(this.texteditor.render());
+      this.input = $(this.texteditor.getTextarea()); // Add locale change listener to text editor
+
+      this.texteditor.setOnChangeCallback(function (value) {
+        var currentLanguage = _this.main.flagsTool.languages[_this.main.flagsTool.currentFlag];
+        _this.inputvalues[currentLanguage] = value;
+      });
     }
 
-    this.input = $(el.children()[el.children().length - 1]);
     this.main = loader;
-    this.input.css({
+    if (this.texteditor == null) this.input.css({
       "width": el.attr('width') < 35 ? 35 : el.attr('width'),
       "height": el.attr('height') < 12 ? 12 : el.attr('height')
     });
     el.css({
-      "width": this.input.outerWidth() < 35 ? 'auto' : this.input.outerWidth(),
+      "width": el.attr('width') < 35 ? 35 : el.attr('width'),
       "padding-bottom": "2px",
       "padding-top": "2px",
       "position": "relative"
@@ -59,26 +83,28 @@ var InputTool = /*#__PURE__*/function () {
   (0, _createClass2["default"])(InputTool, [{
     key: "initKeyLogging",
     value: function initKeyLogging() {
-      var _this = this;
-
-      this.input.on('keyup', function () {
-        var currentLanguage = _this.main.flagsTool.languages[_this.main.flagsTool.currentFlag];
-        _this.inputvalues[currentLanguage] = $(_this.input).val();
-      });
-    }
-  }, {
-    key: "initInputChange",
-    value: function initInputChange() {
       var _this2 = this;
 
-      this.input.on('change', function () {
+      this.input.on('keyup', function () {
         var currentLanguage = _this2.main.flagsTool.languages[_this2.main.flagsTool.currentFlag];
         _this2.inputvalues[currentLanguage] = $(_this2.input).val();
       });
     }
   }, {
+    key: "initInputChange",
+    value: function initInputChange() {
+      var _this3 = this;
+
+      this.input.on('change', function () {
+        var currentLanguage = _this3.main.flagsTool.languages[_this3.main.flagsTool.currentFlag];
+        _this3.inputvalues[currentLanguage] = $(_this3.input).val();
+      });
+    }
+  }, {
     key: "changedInputView",
     value: function changedInputView() {
+      var _this$texteditor;
+
       var currentLanguage = this.main.flagsTool.languages[this.main.flagsTool.currentFlag];
 
       if (this.main.flagsTool.placeHolderType === "string") {
@@ -88,27 +114,28 @@ var InputTool = /*#__PURE__*/function () {
       }
 
       this.input.val(this.inputvalues[currentLanguage]);
+      (_this$texteditor = this.texteditor) === null || _this$texteditor === void 0 ? void 0 : _this$texteditor.updatePreview();
     }
   }, {
     key: "addElementMethods",
     value: function addElementMethods() {
-      var _this3 = this;
+      var _this4 = this;
 
       var printResults = function printResults(lang) {
-        if (_this3.inputvalues !== undefined && _this3.inputvalues[lang] !== undefined) {
-          return _this3.inputvalues[lang];
-        } else if (_this3.inputvalues !== undefined) {
-          return _this3.main.codeTranslator.translateIsoAssocArrayToShort(_this3.inputvalues);
+        if (_this4.inputvalues !== undefined && _this4.inputvalues[lang] !== undefined) {
+          return _this4.inputvalues[lang];
+        } else if (_this4.inputvalues !== undefined) {
+          return _this4.main.codeTranslator.translateIsoAssocArrayToShort(_this4.inputvalues);
         } else {
           return "";
         }
       };
 
       var printResultsObject = function printResultsObject(lang) {
-        if (_this3.inputvalues !== undefined && _this3.inputvalues[lang] !== undefined) {
-          return _this3.inputvalues[lang];
-        } else if (_this3.inputvalues !== undefined) {
-          return _this3.main.codeTranslator.translateIsoAssocArrayToShortObject(_this3.inputvalues);
+        if (_this4.inputvalues !== undefined && _this4.inputvalues[lang] !== undefined) {
+          return _this4.inputvalues[lang];
+        } else if (_this4.inputvalues !== undefined) {
+          return _this4.main.codeTranslator.translateIsoAssocArrayToShortObject(_this4.inputvalues);
         } else {
           return "";
         }
@@ -121,13 +148,13 @@ var InputTool = /*#__PURE__*/function () {
       var missingi18n = function missingi18n() {
         var missing = [];
 
-        for (var i = 0; i < _this3.main.flagsTool.languages.length; i++) {
-          if (!(_this3.main.flagsTool.languages[i] in _this3.inputvalues) || _this3.inputvalues[_this3.main.flagsTool.languages[i]] === undefined || _this3.inputvalues[_this3.main.flagsTool.languages[i]].length === 0) {
-            missing.push(_this3.main.flagsTool.languages[i]);
+        for (var i = 0; i < _this4.main.flagsTool.languages.length; i++) {
+          if (!(_this4.main.flagsTool.languages[i] in _this4.inputvalues) || _this4.inputvalues[_this4.main.flagsTool.languages[i]] === undefined || _this4.inputvalues[_this4.main.flagsTool.languages[i]].length === 0) {
+            missing.push(_this4.main.flagsTool.languages[i]);
           }
         }
 
-        return _this3.main.codeTranslator.translateIsoArrayToShort(missing);
+        return _this4.main.codeTranslator.translateIsoArrayToShort(missing);
       };
 
       var setValueAuto = function setValueAuto(value) {
@@ -136,7 +163,7 @@ var InputTool = /*#__PURE__*/function () {
             setValue(key, value[key]);
           });
         } else {
-          _this3.input.val(value);
+          _this4.input.val(value);
         }
       };
 
@@ -150,10 +177,10 @@ var InputTool = /*#__PURE__*/function () {
             }
 
             for (var i = 0; i < lng.length; i++) {
-              var _short = _this3.main.codeTranslator.translateIsoToShort(lng[i]);
+              var _short = _this4.main.codeTranslator.translateIsoToShort(lng[i]);
 
-              if (_this3.main.isi18nRegistered(_short)) {
-                _this3.inputvalues[_short] = value[i];
+              if (_this4.main.isi18nRegistered(_short)) {
+                _this4.inputvalues[_short] = value[i];
               } else {
                 throw "Language " + lng + " is not registered with the View";
               }
@@ -162,22 +189,22 @@ var InputTool = /*#__PURE__*/function () {
             throw "Either both, or non argument must be of type Array";
           }
         } else {
-          var _short2 = _this3.main.codeTranslator.translateIsoToShort(lng);
+          var _short2 = _this4.main.codeTranslator.translateIsoToShort(lng);
 
-          if (_this3.main.isi18nRegistered(_short2)) {
-            _this3.inputvalues[_short2] = value;
+          if (_this4.main.isi18nRegistered(_short2)) {
+            _this4.inputvalues[_short2] = value;
           } else {
             throw "Language " + lng + " is not registered with the View";
           }
         }
 
-        _this3.changedInputView();
+        _this4.changedInputView();
 
         return true;
       };
 
       var availablei18n = function availablei18n() {
-        return _this3.main.codeTranslator.getAllLongs();
+        return _this4.main.codeTranslator.getAllLongs();
       };
 
       var registerFormIncompleteHandler = function registerFormIncompleteHandler(handler) {
@@ -186,7 +213,7 @@ var InputTool = /*#__PURE__*/function () {
           return false;
         }
 
-        _this3.main.failHandler = handler;
+        _this4.main.failHandler = handler;
         return true;
       };
 
